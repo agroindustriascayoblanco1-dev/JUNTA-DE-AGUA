@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Junta de Agua Cayo Blanco | Portal del Abonado</title>
 <meta name="description" content="Portal del abonado de la Junta de Agua Cayo Blanco">
 <style>
@@ -589,6 +589,98 @@ body{
   .status .amount{font-size:1.35rem}
 }
 </style>
+
+<style>
+/* ===== CONTACTO + ANTI-ZOOM V7 ===== */
+.contact-card{
+  margin:12px 0 0;
+  padding:18px 19px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:15px;
+  background:linear-gradient(135deg,#063b70,#0878c9);
+  color:#fff;
+  border-radius:18px;
+  box-shadow:0 12px 30px rgba(4,67,120,.13);
+}
+.contact-icon{
+  width:52px;height:52px;border-radius:16px;
+  display:grid;place-items:center;
+  background:rgba(255,255,255,.14);
+  font-size:24px;
+}
+.contact-kicker{
+  font-size:.58rem;font-weight:950;letter-spacing:.12em;
+  color:#bce5ff;margin-bottom:4px;
+}
+.contact-main h3{
+  margin:0;font-size:.98rem;letter-spacing:-.02em;
+}
+.contact-main p{
+  margin:4px 0 0;color:#d9efff;font-size:.68rem;line-height:1.45;
+}
+.contact-actions{
+  display:flex;gap:8px;
+}
+.contact-btn{
+  min-width:126px;
+  padding:10px 12px;
+  border-radius:12px;
+  text-decoration:none;
+  display:flex;flex-direction:column;align-items:center;
+  font-size:.7rem;font-weight:950;
+  transition:.18s;
+}
+.contact-btn span{
+  font-size:.58rem;font-weight:800;margin-top:2px;opacity:.9;
+}
+.contact-btn.call{
+  color:#063766;background:#fff;
+}
+.contact-btn.whatsapp{
+  color:#fff;background:#0bb56b;
+}
+.contact-btn:hover{transform:translateY(-1px)}
+
+@media(max-width:720px){
+  /* iOS Safari zooms focused form fields below 16px. Keep the input at 16px. */
+  input{
+    font-size:16px!important;
+    min-height:56px;
+  }
+  .contact-card{
+    grid-template-columns:auto 1fr;
+    gap:11px;
+    padding:15px;
+    border-radius:16px;
+  }
+  .contact-icon{
+    width:45px;height:45px;border-radius:13px;font-size:21px;
+  }
+  .contact-main h3{font-size:.86rem}
+  .contact-main p{font-size:.62rem}
+  .contact-actions{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
+  .contact-btn{
+    min-width:0;
+    min-height:48px;
+    padding:8px;
+    font-size:.66rem;
+  }
+}
+@media(max-width:430px){
+  input{font-size:16px!important}
+  .contact-card{padding:13px}
+  .contact-actions{grid-template-columns:1fr 1fr}
+  .contact-btn{font-size:.61rem}
+  .contact-btn span{font-size:.52rem}
+}
+</style>
 </head>
 <body>
 <div id="menuBackdrop" class="menu-backdrop"></div>
@@ -691,6 +783,19 @@ body{
         <button data-target="cortes"><span class="qico">⚠</span>Ver cortes</button>
         <button data-target="reuniones"><span class="qico">👥</span>Próximas reuniones</button>
       </div></div>
+    </section>
+
+    <section class="contact-card">
+      <div class="contact-icon">👨‍💻</div>
+      <div class="contact-main">
+        <div class="contact-kicker">SOPORTE DE SISTEMAS</div>
+        <h3>¿Necesitas ayuda con el portal?</h3>
+        <p><strong>Cristhian Osorio Acosta</strong><br>Área de Sistemas · Junta de Agua Cayo Blanco</p>
+      </div>
+      <div class="contact-actions">
+        <a class="contact-btn call" href="tel:+50496775363">📞 Llamar <span>9677-5363</span></a>
+        <a class="contact-btn whatsapp" href="https://wa.me/50496775363" target="_blank" rel="noopener">💬 WhatsApp <span>Escribir ahora</span></a>
+      </div>
     </section>
   </section>
 
