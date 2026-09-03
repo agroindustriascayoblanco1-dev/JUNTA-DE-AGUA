@@ -912,83 +912,16 @@ body{
 @media(max-width:600px){.meeting-stats{grid-template-columns:1fr 1fr}.meeting-stat.fine{grid-column:1/-1}.meeting-row{grid-template-columns:1fr}.meeting-fine{text-align:left}}
 </style>
 
-<style>
-/* ===== TARJETA DE ABONADO · DISEÑO ORDENADO ===== */
-.account{
-  display:block;position:relative;overflow:hidden;padding:20px 24px;
-  border-radius:20px;background:#fff;border:1px solid var(--line);
-  box-shadow:var(--soft);margin-bottom:14px;
-}
-.account > div:first-child{width:100%}
-.account .profile{display:flex;align-items:center;gap:13px;margin:0;min-width:0}
-.account .avatar{
-  flex:0 0 52px;width:52px;height:52px;border-radius:15px;
-  background:linear-gradient(145deg,#dff4ff,#c5eaff);color:var(--blue);
-  display:grid;place-items:center;font-size:24px;
-}
-.account .profile > div:last-child{min-width:0}
-.account .profile h2{
-  margin:0;color:var(--ink);font-size:1.12rem;line-height:1.15;
-  letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.account .profile p{margin:4px 0 0;color:var(--muted);font-size:.68rem;line-height:1.2}
-.account .meta{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;
-  margin:17px 0 0 65px;padding:0;color:var(--muted);font-size:.65rem;
-  position:relative;z-index:2;
-}
-.account .meta > div{min-width:0;padding:0 18px;border-left:1px solid #e7eef5}
-.account .meta > div:first-child{padding-left:0;border-left:0}
-.account .meta strong{
-  display:block;margin-top:4px;color:var(--ink);font-size:.76rem;font-weight:950;
-  line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.account .meta > div:last-child strong{overflow:visible;white-space:normal}
-.account .badge{
-  display:inline-flex;align-items:center;gap:5px;margin-top:1px;padding:6px 10px;
-  border-radius:999px;font-size:.66rem;font-weight:950;line-height:1;
-}
-.account .badge.status-active{
-  background:#e9f9f1!important;color:#087a4b!important;border:1px solid #bce8d2!important;
-}
-.account .badge.status-inactive{
-  background:#fff0f2!important;color:#c52840!important;border:1px solid #f2c4cb!important;
-}
-.account:after{
-  content:"";position:absolute;right:22px;top:50%;transform:translateY(-50%);
-  width:86px;height:86px;background:url("LOGO.png") center/contain no-repeat;
-  opacity:.045;pointer-events:none;
-}
-@media(max-width:900px){
-  .account .meta{margin-left:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 0}
-  .account .meta > div:nth-child(3){padding-left:0;border-left:0}
-}
-@media(max-width:600px){
-  .account{padding:15px;border-radius:17px}
-  .account .profile{gap:10px}
-  .account .avatar{flex-basis:46px;width:46px;height:46px;border-radius:13px;font-size:21px}
-  .account .profile h2{font-size:.94rem}
-  .account .profile p{font-size:.61rem}
-  .account .meta{margin-top:14px;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 0}
-  .account .meta > div{padding:0 10px}
-  .account .meta > div:nth-child(odd){padding-left:0;border-left:0}
-  .account .meta strong{font-size:.67rem}
-  .account .badge{font-size:.6rem;padding:6px 9px}
-  .account:after{width:62px;height:62px;right:8px;top:23px;transform:none}
-}
-</style>
-
-
-<style id="estado-abonado-final">
-#estadoAbonado.badge.status-active{
+<style id="estado-final">
+#estadoAbonado.status-active{
   background:#dcfce7 !important;
   color:#15803d !important;
-  border:1px solid #86efac !important;
+  border:2px solid #86efac !important;
 }
-#estadoAbonado.badge.status-inactive{
+#estadoAbonado.status-inactive{
   background:#fee2e2 !important;
   color:#dc2626 !important;
-  border:1px solid #fca5a5 !important;
+  border:2px solid #fca5a5 !important;
 }
 </style>
 
@@ -1184,7 +1117,7 @@ body{
 </div>
 
 <script>
-const API_URL='https://script.google.com/macros/s/AKfycby0Lms4AcOuTzUuoNgT13ad2aXudD-al-oxDzeLd23QCoaBnTxAx_IP92Tc63Ou0U8eCg/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbx22bPoG6_z8TZwcr0SIqJTpS8ap7X8gfKVIb2ApBbK00jksgJV8Spam5YxX4wCD-Gz/exec';
 const $=id=>document.getElementById(id);
 const money=n=>new Intl.NumberFormat('es-HN',{style:'currency',currency:'HNL',minimumFractionDigits:2}).format(Number(n)||0);
 
@@ -1220,12 +1153,8 @@ function render(data){
  const estadoEl = $('estadoAbonado');
  const estadoTexto = String(a.estado || 'ACTIVO').trim();
  const estadoNormalizado = estadoTexto.toUpperCase()
-   .normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim();
-
- // ACTIVO siempre verde. INACTIVO/SUSPENDIDO/BAJA/CANCELADO siempre rojo.
- const esInactivo = /INACTIV|SUSPEND|BAJA|CANCEL/.test(estadoNormalizado);
- const esActivo = !esInactivo && /\\bACTIV[OA]?\\b/.test(estadoNormalizado);
-
+   .normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');
+ const esActivo = estadoNormalizado === 'ACTIVO' || estadoNormalizado === 'ACTIVA';
  estadoEl.classList.remove('status-active','status-inactive');
  estadoEl.textContent = '● '+estadoTexto;
  estadoEl.classList.add(esActivo ? 'status-active' : 'status-inactive');
