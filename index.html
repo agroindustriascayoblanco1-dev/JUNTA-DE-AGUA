@@ -116,6 +116,30 @@ button{border:0;border-radius:16px;min-height:53px;padding:0 20px;font-weight:90
 .month{padding:7px 10px;border-radius:999px;background:var(--danger-soft);color:#a72537;font-size:.78rem;font-weight:900}
 .footer{text-align:center;color:#7a8983;font-size:.76rem;padding:8px 0 35px}
 .section-wide{grid-column:1/-1}
+
+/* ===== Estado de cuenta / pagos ===== */
+.payment-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.payment-box{background:#fff;border:1px solid var(--line);border-radius:19px;padding:19px;box-shadow:0 8px 28px rgba(12,67,47,.045)}
+.payment-box small{display:block;color:var(--muted);font-weight:800;font-size:.73rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.payment-box .big{font-size:1.5rem;font-weight:950;letter-spacing:-.035em}
+.payment-box.mora .big{color:#a72537}
+.account-note{margin:0 0 14px;padding:13px 15px;border-radius:15px;background:#f7faf8;border:1px solid #e5eee9;color:#50655d;font-size:.83rem;line-height:1.5}
+.month-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.month-card{border:1px solid var(--line);border-radius:17px;padding:14px;background:#fbfdfc;min-height:104px;display:flex;flex-direction:column;justify-content:space-between}
+.month-card .m-name{font-size:.74rem;font-weight:950;letter-spacing:.06em;color:#587067}
+.month-card .m-amount{font-size:1.12rem;font-weight:950;margin:7px 0}
+.month-card .m-state{font-size:.72rem;font-weight:900}
+.month-card.paid{background:#eefaf4;border-color:#cce9dc}
+.month-card.paid .m-state{color:#08734d}
+.month-card.late{background:#fff8f8;border-color:#f0d0d6}
+.month-card.late .m-state{color:#a72537}
+.month-card.pending{background:#fff4f5;border-color:#f0cbd1}
+.month-card.pending .m-state{color:#a72537}
+.month-card.future{background:#f6f8f7}
+.month-card.future .m-state{color:#82908b}
+.payment-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:13px;border:1px solid #e7eeea;border-radius:14px;background:#fafcfb}
+.payment-row .p-month{font-weight:900}.payment-row .p-status{font-size:.74rem;font-weight:900}.payment-row .p-status.paid{color:#08734d}.payment-row .p-status.late{color:#a72537}.payment-row .p-status.pending{color:#a72537}.payment-row .p-status.future{color:#82908b}
+
 @media(max-width:700px){
  .wrap{width:min(100% - 18px,1080px)}
  .top{padding-top:18px}
@@ -124,6 +148,8 @@ button{border:0;border-radius:16px;min-height:53px;padding:0 20px;font-weight:90
  .hero{padding:26px 6px 16px}
  .login{padding:21px;border-radius:22px}
  .cards,.sections{grid-template-columns:1fr}
+ .payment-summary{grid-template-columns:1fr}
+ .month-grid{grid-template-columns:repeat(2,1fr)}
  .status-row,.account-head{align-items:flex-start;flex-direction:column}
  .logout{width:100%}
  .section-wide{grid-column:auto}
@@ -162,13 +188,14 @@ button{border:0;border-radius:16px;min-height:53px;padding:0 20px;font-weight:90
 <div><div class="eyebrow">Saldo pendiente</div><div id="deuda" class="amount">L 0.00</div></div>
 </div></div>
 
-<div class="cards">
-<div class="card"><small>Último pago</small><div id="ultimoPago" class="value">—</div></div>
-<div class="card"><small>Pagado este año</small><div id="pagadoAnio" class="value">L 0.00</div></div>
-<div class="card"><small>Meses pendientes</small><div id="cantidadPendientes" class="value">0</div></div>
+<div class="payment-summary">
+<div class="payment-box"><small>Total pagado</small><div id="pagadoTotal" class="big">L 0.00</div></div>
+<div class="payment-box"><small>Mensualidades pagadas</small><div id="mensualidadesPagadas" class="big">L 0.00</div></div>
+<div class="payment-box mora"><small>Mora pagada</small><div id="moraPagada" class="big">L 0.00</div></div>
 </div>
 
 <div class="sections">
+<section class="section section-wide"><h3>💧 Estado de cuenta 2026</h3><p class="account-note">Cada mes muestra exactamente el valor registrado en la hoja de pagos. <strong>L50</strong> corresponde a la mensualidad y <strong>L55</strong> a mensualidad más mora.</p><div id="monthGrid" class="month-grid"></div></section>
 <section class="section section-wide"><h3>📋 Historial de pagos</h3><div id="historial" class="history"></div></section>
 <section class="section"><h3>🔴 Meses pendientes</h3><div id="meses" class="months"></div></section>
 <section class="section"><h3>📢 Comunicados</h3><div id="comunicados"></div></section>
@@ -182,7 +209,7 @@ button{border:0;border-radius:16px;min-height:53px;padding:0 20px;font-weight:90
 </main>
 
 <script>
-const API_URL='https://script.google.com/macros/s/AKfycbxbzquzWb36USFUOiaqY2hoWcCCMh_ixvFSi7JH8shWEUs_emW_nHjPm8-I-vEejbsh8A/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbx22bPoG6_z8TZwcr0SIqJTpS8ap7X8gfKVIb2ApBbK00jksgJV8Spam5YxX4wCD-Gz/exec';
 const $=id=>document.getElementById(id);
 const money=n=>new Intl.NumberFormat('es-HN',{style:'currency',currency:'HNL',minimumFractionDigits:2}).format(Number(n)||0);
 
@@ -219,23 +246,38 @@ $('datos').textContent='Código '+(a.codigo||'—')+' · '+(a.direccion||'');
 $('status').className='status'+(pending>0?' pending':'');
 $('estado').textContent=pending>0?'PENDIENTE':'AL DÍA';
 $('deuda').textContent=money(pending);
-$('pagadoAnio').textContent=money(c.totalPagadoAnio);
-$('cantidadPendientes').textContent=String(c.cantidadPendientes||0);
-$('ultimoPago').textContent=c.ultimoPago?c.ultimoPago.fecha+' · '+money(c.ultimoPago.monto):'Sin pagos registrados';
+$('pagadoTotal').textContent=money(c.totalPagado);
+$('mensualidadesPagadas').textContent=money(c.totalMensualidadesPagadas);
+$('moraPagada').textContent=money(c.totalMoraPagada);
+
+const grid=$('monthGrid');clear(grid);
+(c.historial||[]).forEach(p=>{
+  const card=document.createElement('div');
+  let cls=p.estado==='PAGADO' ? (Number(p.mora)>0?'month-card late':'month-card paid') : (p.estado==='PENDIENTE'?'month-card pending':'month-card future');
+  card.className=cls;
+  const name=document.createElement('div');name.className='m-name';name.textContent=p.mes||'';
+  const amount=document.createElement('div');amount.className='m-amount';
+  amount.textContent=p.estado==='FUTURO'?'—':(Number(p.monto)>0?money(p.monto):'L 55.00');
+  const state=document.createElement('div');state.className='m-state';
+  state.textContent=p.estado==='PAGADO' ? (Number(p.mora)>0?'✓ Pagado + mora':'✓ Pagado') : (p.estado==='PENDIENTE'?'Pendiente · L55':'Aún no corresponde');
+  card.append(name,amount,state);grid.appendChild(card);
+});
+if(!grid.children.length)empty(grid,'Sin información de pagos.');
 
 const h=$('historial');clear(h);
-(c.historial||[]).forEach(p=>{
-const row=document.createElement('div');row.className='payment';
-const left=document.createElement('span');left.textContent=(p.fecha||'')+' · '+(p.mes||'');
-const right=document.createElement('strong');right.textContent=money(p.monto);
-row.append(left,right);h.appendChild(row)
+(c.historial||[]).filter(p=>p.estado==='PAGADO').forEach(p=>{
+  const row=document.createElement('div');row.className='payment-row';
+  const month=document.createElement('span');month.className='p-month';month.textContent=p.mes||'';
+  const status=document.createElement('span');status.className='p-status '+(Number(p.mora)>0?'late':'paid');status.textContent=Number(p.mora)>0?'Pagado + mora':'Pagado';
+  const right=document.createElement('strong');right.textContent=money(p.monto);
+  row.append(month,status,right);h.appendChild(row);
 });
 if(!h.children.length)empty(h,'Sin pagos registrados.');
 
 const m=$('meses');clear(m);
 (c.mesesPendientes||[]).forEach(x=>{
-const s=document.createElement('span');s.className='month';
-s.textContent=typeof x==='object'?(x.nombre||''):x;m.appendChild(s)
+  const s=document.createElement('span');s.className='month';
+  s.textContent=typeof x==='object'?(x.nombre||''):x;m.appendChild(s)
 });
 if(!m.children.length)empty(m,'Sin meses pendientes.');
 
