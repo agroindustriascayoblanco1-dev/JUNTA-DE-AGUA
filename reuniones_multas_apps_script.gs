@@ -10,7 +10,7 @@
 //   Filas 3+: identidad, nombre y casillas de asistencia.
 //
 // Casilla marcada   = asistió = L0 de multa
-// Casilla sin marcar = no asistió = L100 de multa
+// Casilla sin marcar = no asistió = L200 de multa
 //
 // La fecha se toma tal como aparece en la hoja. Si existe una fecha
 // escrita incorrectamente (por ejemplo 09/81/2028), NO se modifica aquí.
