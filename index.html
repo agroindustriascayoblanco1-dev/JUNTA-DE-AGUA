@@ -681,6 +681,74 @@ body{
   .contact-btn span{font-size:.52rem}
 }
 </style>
+
+<style>
+/* ===== PANTALLA DE CONTACTOS V8 ===== */
+.contact-list{
+  padding:0 18px 20px;
+  display:grid;
+  gap:10px;
+}
+.contact-person{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:14px;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:linear-gradient(135deg,#fff,#f8fbfe);
+  box-shadow:var(--soft);
+}
+.contact-person-icon{
+  width:52px;height:52px;border-radius:16px;
+  display:grid;place-items:center;
+  background:#e5f4ff;color:var(--blue);
+  font-size:23px;
+}
+.contact-role{
+  font-size:.57rem;font-weight:950;letter-spacing:.11em;color:var(--blue);
+}
+.contact-person-info h3{
+  margin:3px 0 2px;font-size:.96rem;letter-spacing:-.02em;
+}
+.contact-person-info p{
+  margin:0;color:var(--muted);font-size:.68rem;
+}
+.contact-number{
+  margin-top:6px;font-size:.7rem;font-weight:900;color:var(--ink);
+}
+.contact-person-actions{
+  display:flex;gap:7px;
+}
+.contact-action{
+  min-width:88px;min-height:43px;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  border-radius:11px;text-decoration:none;font-size:.68rem;font-weight:950;
+}
+.contact-action.call{background:#eaf5ff;color:#0868ac}
+.contact-action.wa{background:#eafbf3;color:#07804d}
+
+@media(max-width:720px){
+  .contact-list{padding:0 13px 15px}
+  .contact-person{
+    grid-template-columns:auto 1fr;
+    gap:10px;
+    padding:13px;
+  }
+  .contact-person-icon{width:45px;height:45px;border-radius:13px;font-size:20px}
+  .contact-person-info h3{font-size:.84rem}
+  .contact-person-info p{font-size:.61rem}
+  .contact-number{font-size:.65rem}
+  .contact-person-actions{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
+  .contact-action{min-height:45px;font-size:.65rem}
+}
+</style>
 </head>
 <body>
 <div id="menuBackdrop" class="menu-backdrop"></div>
@@ -698,6 +766,7 @@ body{
     <button data-target="cortes"><span class="nav-icon">⚠</span>Cortes</button>
     <button data-target="reuniones"><span class="nav-icon">👥</span>Reuniones</button>
     <button data-target="consejos"><span class="nav-icon">💧</span>Consejos</button>
+    <button data-target="contactos"><span class="nav-icon">👨‍💻</span>Contactos</button>
   </nav>
   <div class="side-help"><strong>¿Necesitas ayuda?</strong><br>Consulta la información de tu cuenta o comunícate con la Junta de Agua.</div>
   <div class="side-footer">© 2026 Junta de Agua Cayo Blanco</div>
@@ -782,21 +851,11 @@ body{
         <button data-target="suministro"><span class="qico">🚰</span>Próximo suministro</button>
         <button data-target="cortes"><span class="qico">⚠</span>Ver cortes</button>
         <button data-target="reuniones"><span class="qico">👥</span>Próximas reuniones</button>
+        <button data-target="contactos"><span class="qico">👨‍💻</span>Contactos</button>
       </div></div>
     </section>
 
-    <section class="contact-card">
-      <div class="contact-icon">👨‍💻</div>
-      <div class="contact-main">
-        <div class="contact-kicker">SOPORTE DE SISTEMAS</div>
-        <h3>¿Necesitas ayuda con el portal?</h3>
-        <p><strong>Cristhian Osorio Acosta</strong><br>Área de Sistemas · Junta de Agua Cayo Blanco</p>
-      </div>
-      <div class="contact-actions">
-        <a class="contact-btn call" href="tel:+50496775363">📞 Llamar <span>9677-5363</span></a>
-        <a class="contact-btn whatsapp" href="https://wa.me/50496775363" target="_blank" rel="noopener">💬 WhatsApp <span>Escribir ahora</span></a>
-      </div>
-    </section>
+    
   </section>
 
   <section id="historial" class="screen card section secondary">
@@ -834,6 +893,30 @@ body{
     <div class="card-head"><div class="card-title"><div class="ico">💧</div><div><h3>Consejos para cuidar el agua</h3><p>Recomendaciones de la Junta</p></div></div></div>
     <div class="card-body"><div id="consejosLista" class="list"></div></div>
   </section>
+
+  <section id="contactos" class="screen card section secondary">
+    <div class="view-head">
+      <div><h2>Contactos</h2><p>Comunícate con la Junta de Agua cuando necesites ayuda.</p></div>
+      <button class="back-home" data-target="inicio">← Volver al inicio</button>
+    </div>
+    <div class="contact-list">
+      <article class="contact-person">
+        <div class="contact-person-icon">👨‍💻</div>
+        <div class="contact-person-info">
+          <div class="contact-role">SOPORTE DE SISTEMAS</div>
+          <h3>Cristhian Osorio Acosta</h3>
+          <p>Área de Sistemas · Junta de Agua Cayo Blanco</p>
+          <div class="contact-number">📱 9677-5363</div>
+        </div>
+        <div class="contact-person-actions">
+          <a class="contact-action call" href="tel:+50496775363">📞 <span>Llamar</span></a>
+          <a class="contact-action wa" href="https://wa.me/50496775363" target="_blank" rel="noopener">💬 <span>WhatsApp</span></a>
+        </div>
+      </article>
+      <!-- Aquí podremos agregar los demás contactos después. -->
+    </div>
+  </section>
+
 </section>
 
   <footer class="footer">© 2026 Junta de Agua Cayo Blanco · Cuidemos el agua, cuidemos nuestro futuro.</footer>
