@@ -874,6 +874,19 @@ body{
   border:1px solid #f2c4cb;
 }
 </style>
+
+<style>
+.badge.status-inactive{
+  background:#fff0f2 !important;
+  color:#c52840 !important;
+  border:1px solid #f2c4cb !important;
+}
+.badge.status-active{
+  background:#e9f9f1 !important;
+  color:#087a4b !important;
+  border:1px solid #bce8d2 !important;
+}
+</style>
 </head>
 <body>
 <div id="menuBackdrop" class="menu-backdrop"></div>
@@ -1084,10 +1097,13 @@ function render(data){
  $('direccion').textContent=a.direccion||'—';
  const estadoEl = $('estadoAbonado');
  const estadoTexto = String(a.estado || 'ACTIVO').trim();
- const esActivo = estadoTexto.toUpperCase().includes('ACTIV');
+ const estadoNormalizado = estadoTexto.toUpperCase()
+   .normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');
+ const esInactivo = /INACTIV|SUSPEND|BAJA|CANCEL/.test(estadoNormalizado);
+ const esActivo = !esInactivo && /ACTIV/.test(estadoNormalizado);
  estadoEl.textContent = '● '+estadoTexto;
  estadoEl.classList.toggle('status-active', esActivo);
- estadoEl.classList.toggle('status-inactive', !esActivo);
+ estadoEl.classList.toggle('status-inactive', esInactivo || !esActivo);
  $('pagadoTotal').textContent=money(c.totalPagado);
  $('anioMetric').textContent='Este año '+(c.anio||'');
  $('mensualidadesPagadas').textContent=money(c.totalMensualidadesPagadas);
