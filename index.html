@@ -27,6 +27,7 @@ button,input{font:inherit}button{cursor:pointer}
 .app{display:flex;min-height:100vh}
 .sidebar{
  width:250px;flex:0 0 250px;position:sticky;top:0;height:100vh;overflow:hidden;
+ display:none;
  color:#fff;background:
  radial-gradient(circle at 10% 5%,rgba(24,168,238,.32),transparent 28%),
  linear-gradient(180deg,#073e78 0,#052d5b 62%,#041f42 100%);
@@ -46,6 +47,15 @@ button,input{font:inherit}button{cursor:pointer}
 .side-help{position:absolute;left:15px;right:15px;bottom:70px;padding:14px;border-radius:16px;background:rgba(255,255,255,.08);color:#dcefff;font-size:.76rem;line-height:1.5}
 .side-footer{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:#8db6d8;font-size:.65rem}
 .main{flex:1;min-width:0}
+.sidebar.opened{display:block}
+.view{display:none;animation:viewIn .22s ease}
+.view.active{display:block}
+@keyframes viewIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.view-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.view-head h2{margin:0;font-size:1.25rem;letter-spacing:-.035em}
+.view-head p{margin:4px 0 0;color:var(--muted);font-size:.74rem}
+.back-home{border:1px solid #cfe0ee;background:#fff;color:var(--nav);border-radius:11px;padding:9px 12px;font-size:.72rem;font-weight:950}
+
 .content{width:min(1180px,calc(100% - 36px));margin:auto;padding:22px 0 35px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}
 .mobile-menu{display:none;border:0;background:#fff;color:var(--nav);width:46px;height:46px;border-radius:14px;box-shadow:var(--soft);font-size:20px}
@@ -186,7 +196,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
 <main class="main">
 <div class="content">
   <div class="topbar">
-    <button id="menuBtn" class="mobile-menu" aria-label="Abrir menú">☰</button>
+    <button id="menuBtn" class="mobile-menu hidden" aria-label="Abrir menú">☰</button>
     <div class="welcome">
       <div class="welcome-dot">💧</div>
       <div><h1>¡Bienvenido de nuevo!</h1><p>Consulta tu información de manera fácil y segura.</p></div>
@@ -210,7 +220,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
   </section>
 
   <section id="panel" class="hidden" aria-live="polite">
-    <section id="inicio">
+    <section id="inicio" class="view active">
       <div class="account">
         <div>
           <div class="profile">
@@ -237,8 +247,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
         <div class="left"><div class="status-icon">✓</div><div><div class="eyebrow">Estado de tu cuenta</div><h3 id="estado">AL DÍA</h3><div id="estadoMensaje" style="color:var(--muted);font-size:.78rem;margin-top:4px">Gracias por mantenerte al día con tus pagos.</div></div></div>
         <div class="debt"><small>Saldo pendiente</small><div id="deudaGrande" class="amount">L0.00</div></div>
       </div>
-    </section>
-
+ 
     <section id="pagos" class="card pay-card section-wide">
       <div class="card-head">
         <div class="card-title"><div class="ico">📅</div><div><h3>Pagos 2026</h3><p>Detalle de tus pagos mensuales</p></div></div>
@@ -266,37 +275,65 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
       </div></div>
     </section>
 
-    <div class="layout">
-      <section id="historial" class="card section section-wide">
+    <section id="historial" class="view card section section-wide">
+        <div class="view-head">
+          <div><h2>Historial de pagos</h2><p>Consulta tus pagos registrados durante el año.</p></div>
+          <button class="back-home" data-target="inicio">← Volver al inicio</button>
+        </div>
+
         <div class="card-head"><div class="card-title"><div class="ico">📋</div><div><h3>Historial de pagos</h3><p>Movimientos registrados durante el año</p></div></div></div>
         <div class="card-body"><div id="historialLista" class="list"></div></div>
       </section>
 
-      <section id="comunicados" class="card section">
+      <section id="comunicados" class="view card section">
+        <div class="view-head">
+          <div><h2>Comunicados</h2><p>Información y avisos importantes de la Junta de Agua.</p></div>
+          <button class="back-home" data-target="inicio">← Volver al inicio</button>
+        </div>
+
         <div class="card-head"><div class="card-title"><div class="ico">📢</div><div><h3>Comunicados</h3><p>Información importante</p></div></div></div>
         <div class="card-body"><div id="comunicadosLista" class="list"></div></div>
       </section>
 
-      <section id="suministro" class="card section">
+      <section id="suministro" class="view card section">
+        <div class="view-head">
+          <div><h2>Suministro de agua</h2><p>Consulta los horarios publicados.</p></div>
+          <button class="back-home" data-target="inicio">← Volver al inicio</button>
+        </div>
+
         <div class="card-head"><div class="card-title"><div class="ico">🚰</div><div><h3>Suministro</h3><p>Horarios publicados</p></div></div></div>
         <div class="card-body"><div id="suministroLista" class="list"></div></div>
       </section>
 
-      <section id="cortes" class="card section">
+      <section id="cortes" class="view card section">
+        <div class="view-head">
+          <div><h2>Cortes programados</h2><p>Consulta interrupciones y trabajos programados.</p></div>
+          <button class="back-home" data-target="inicio">← Volver al inicio</button>
+        </div>
+
         <div class="card-head"><div class="card-title"><div class="ico">⚠</div><div><h3>Cortes programados</h3><p>Avisos de interrupciones</p></div></div></div>
         <div class="card-body"><div id="cortesLista" class="list"></div></div>
       </section>
 
-      <section id="reuniones" class="card section">
+      <section id="reuniones" class="view card section">
+        <div class="view-head">
+          <div><h2>Reuniones</h2><p>Próximas reuniones y actividades de la Junta.</p></div>
+          <button class="back-home" data-target="inicio">← Volver al inicio</button>
+        </div>
+
         <div class="card-head"><div class="card-title"><div class="ico">👥</div><div><h3>Reuniones</h3><p>Próximas actividades</p></div></div></div>
         <div class="card-body"><div id="reunionesLista" class="list"></div></div>
       </section>
 
-      <section id="consejos" class="card section section-wide">
+      <section id="consejos" class="view card section section-wide">
+        <div class="view-head">
+          <div><h2>Consejos</h2><p>Recomendaciones para cuidar y ahorrar agua.</p></div>
+          <button class="back-home" data-target="inicio">← Volver al inicio</button>
+        </div>
+
         <div class="card-head"><div class="card-title"><div class="ico">💧</div><div><h3>Consejos para cuidar el agua</h3><p>Recomendaciones de la Junta</p></div></div></div>
         <div class="card-body"><div id="consejosLista" class="list"></div></div>
       </section>
-    </div>
   </section>
 
   <footer class="footer">© 2026 Junta de Agua Cayo Blanco · Cuidemos el agua, cuidemos nuestro futuro.</footer>
@@ -390,6 +427,9 @@ function render(data){
  $('login').classList.add('hidden');
  $('panel').classList.remove('hidden');
  $('salir').classList.remove('hidden');
+ $('menuBtn').classList.remove('hidden');
+ $('sidebar').classList.add('opened');
+ go('inicio');
  document.querySelector('.topbar').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -406,12 +446,16 @@ async function consultar(){
 }
 function salir(){
  $('panel').classList.add('hidden');$('login').classList.remove('hidden');$('salir').classList.add('hidden');
+ $('menuBtn').classList.add('hidden');
+ $('sidebar').classList.remove('opened','open');
  $('identidad').value='';$('identidad').focus();window.scrollTo({top:0,behavior:'smooth'});
 }
 function go(target){
- const el=document.getElementById(target);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+ const realTarget = target==='pagos' ? 'inicio' : target;
+ document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===realTarget));
  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.target===target));
  $('sidebar').classList.remove('open');
+ window.scrollTo({top:0,behavior:'smooth'});
 }
 $('consultar').addEventListener('click',consultar);
 $('identidad').addEventListener('keydown',e=>{if(e.key==='Enter')consultar();});
