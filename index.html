@@ -860,6 +860,20 @@ body{
   .account:after{width:70px;height:70px;right:8px}
 }
 </style>
+
+<style>
+/* ===== ESTADO DEL ABONADO V11 ===== */
+.badge.status-active{
+  background:#e9f9f1;
+  color:#087a4b;
+  border:1px solid #bce8d2;
+}
+.badge.status-inactive{
+  background:#fff0f2;
+  color:#c52840;
+  border:1px solid #f2c4cb;
+}
+</style>
 </head>
 <body>
 <div id="menuBackdrop" class="menu-backdrop"></div>
@@ -1068,7 +1082,12 @@ function render(data){
  $('codigo').textContent=a.codigo||'—';
  $('identidadVista').textContent=a.identidad||'—';
  $('direccion').textContent=a.direccion||'—';
- $('estadoAbonado').textContent='● '+(a.estado||'ACTIVO');
+ const estadoEl = $('estadoAbonado');
+ const estadoTexto = String(a.estado || 'ACTIVO').trim();
+ const esActivo = estadoTexto.toUpperCase().includes('ACTIV');
+ estadoEl.textContent = '● '+estadoTexto;
+ estadoEl.classList.toggle('status-active', esActivo);
+ estadoEl.classList.toggle('status-inactive', !esActivo);
  $('pagadoTotal').textContent=money(c.totalPagado);
  $('anioMetric').textContent='Este año '+(c.anio||'');
  $('mensualidadesPagadas').textContent=money(c.totalMensualidadesPagadas);
