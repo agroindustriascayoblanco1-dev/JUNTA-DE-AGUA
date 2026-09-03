@@ -24,6 +24,7 @@ body{
 }
 button,input{font:inherit}button{cursor:pointer}
 .hidden{display:none!important}
+#menuBtn:not(.hidden){display:grid}
 .app{display:flex;min-height:100vh}
 .sidebar{
  width:250px;flex:0 0 250px;position:sticky;top:0;height:100vh;overflow:hidden;
@@ -177,6 +178,15 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
  .menu-backdrop.show{display:block}
 }
 </style>
+
+<style>
+#panel{width:100%}
+.screen{display:none!important}
+.screen.active{display:block!important}
+#inicio.screen.active{display:block!important}
+.secondary{min-height:260px;width:100%}
+.menu-toggle-icon{font-size:20px;line-height:1}
+</style>
 </head>
 <body>
 <div id="menuBackdrop" class="menu-backdrop"></div>
@@ -202,7 +212,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
 <main class="main">
 <div class="content">
   <div class="topbar">
-    <button id="menuBtn" class="mobile-menu hidden" aria-label="Abrir menú">☰</button>
+    <button id="menuBtn" class="mobile-menu hidden" aria-label="Mostrar u ocultar menú">☰</button>
     <div class="welcome">
       <div class="welcome-dot">💧</div>
       <div><h1>¡Bienvenido de nuevo!</h1><p>Consulta tu información de manera fácil y segura.</p></div>
@@ -226,35 +236,35 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
   </section>
 
   <section id="panel" class="hidden" aria-live="polite">
-    <section id="inicio" class="screen active">
-      <div class="account">
-        <div>
-          <div class="profile">
-            <div class="avatar">👤</div>
-            <div><h2 id="nombre">Abonado</h2><p>Información de tu cuenta</p></div>
-          </div>
-          <div class="meta">
-            <div>Código<strong id="codigo">—</strong></div>
-            <div>Identidad<strong id="identidadVista">—</strong></div>
-            <div>Dirección<strong id="direccion">—</strong></div>
-            <div>Estado<strong><span id="estadoAbonado" class="badge">● ACTIVO</span></strong></div>
-          </div>
+  <section id="inicio" class="screen active">
+    <div class="account">
+      <div>
+        <div class="profile">
+          <div class="avatar">👤</div>
+          <div><h2 id="nombre">Abonado</h2><p>Información de tu cuenta</p></div>
+        </div>
+        <div class="meta">
+          <div>Código<strong id="codigo">—</strong></div>
+          <div>Identidad<strong id="identidadVista">—</strong></div>
+          <div>Dirección<strong id="direccion">—</strong></div>
+          <div>Estado<strong><span id="estadoAbonado" class="badge">● ACTIVO</span></strong></div>
         </div>
       </div>
+    </div>
 
-      <div class="metrics">
-        <div class="metric blue"><div class="icon">💧</div><small>Total pagado</small><strong id="pagadoTotal">L0.00</strong><span id="anioMetric">Este año</span></div>
-        <div class="metric green"><div class="icon">▣</div><small>Mensualidades pagadas</small><strong id="mensualidadesPagadas">L0.00</strong><span id="mesesPagadosTexto">0 meses</span></div>
-        <div class="metric orange"><div class="icon">$</div><small>Mora pagada</small><strong id="moraPagada">L0.00</strong><span id="mesesMoraTexto">Sin mora</span></div>
-        <div class="metric dark"><div class="icon">▣</div><small>Saldo pendiente</small><strong id="deuda">L0.00</strong><span id="pendienteTexto">Estás al día</span></div>
-      </div>
+    <div class="metrics">
+      <div class="metric blue"><div class="icon">💧</div><small>Total pagado</small><strong id="pagadoTotal">L0.00</strong><span id="anioMetric">Este año</span></div>
+      <div class="metric green"><div class="icon">▣</div><small>Mensualidades pagadas</small><strong id="mensualidadesPagadas">L0.00</strong><span id="mesesPagadosTexto">0 meses</span></div>
+      <div class="metric orange"><div class="icon">$</div><small>Mora pagada</small><strong id="moraPagada">L0.00</strong><span id="mesesMoraTexto">Sin mora</span></div>
+      <div class="metric dark"><div class="icon">▣</div><small>Saldo pendiente</small><strong id="deuda">L0.00</strong><span id="pendienteTexto">Estás al día</span></div>
+    </div>
 
-      <div id="status" class="status">
-        <div class="left"><div class="status-icon">✓</div><div><div class="eyebrow">Estado de tu cuenta</div><h3 id="estado">AL DÍA</h3><div id="estadoMensaje" style="color:var(--muted);font-size:.78rem;margin-top:4px">Gracias por mantenerte al día con tus pagos.</div></div></div>
-        <div class="debt"><small>Saldo pendiente</small><div id="deudaGrande" class="amount">L0.00</div></div>
-      </div>
- 
-    <section id="pagos" class="card pay-card section-wide">
+    <div id="status" class="status">
+      <div class="left"><div class="status-icon">✓</div><div><div class="eyebrow">Estado de tu cuenta</div><h3 id="estado">AL DÍA</h3><div id="estadoMensaje" style="color:var(--muted);font-size:.78rem;margin-top:4px">Gracias por mantenerte al día con tus pagos.</div></div></div>
+      <div class="debt"><small>Saldo pendiente</small><div id="deudaGrande" class="amount">L0.00</div></div>
+    </div>
+
+    <section id="pagos" class="card pay-card">
       <div class="card-head">
         <div class="card-title"><div class="ico">📅</div><div><h3>Pagos 2026</h3><p>Detalle de tus pagos mensuales</p></div></div>
         <button class="outline" data-target="historial">Ver historial</button>
@@ -280,67 +290,44 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
         <button data-target="reuniones"><span class="qico">👥</span>Próximas reuniones</button>
       </div></div>
     </section>
-
-    <section id="historial" class="screen card section section-wide">
-        <div class="view-head">
-          <div><h2>Historial de pagos</h2><p>Consulta tus pagos registrados durante el año.</p></div>
-          <button class="back-home" data-target="inicio">← Volver al inicio</button>
-        </div>
-
-        <div class="card-head"><div class="card-title"><div class="ico">📋</div><div><h3>Historial de pagos</h3><p>Movimientos registrados durante el año</p></div></div></div>
-        <div class="card-body"><div id="historialLista" class="list"></div></div>
-      </section>
-
-      <section id="comunicados" class="screen card section">
-        <div class="view-head">
-          <div><h2>Comunicados</h2><p>Información y avisos importantes de la Junta de Agua.</p></div>
-          <button class="back-home" data-target="inicio">← Volver al inicio</button>
-        </div>
-
-        <div class="card-head"><div class="card-title"><div class="ico">📢</div><div><h3>Comunicados</h3><p>Información importante</p></div></div></div>
-        <div class="card-body"><div id="comunicadosLista" class="list"></div></div>
-      </section>
-
-      <section id="suministro" class="screen card section">
-        <div class="view-head">
-          <div><h2>Suministro de agua</h2><p>Consulta los horarios publicados.</p></div>
-          <button class="back-home" data-target="inicio">← Volver al inicio</button>
-        </div>
-
-        <div class="card-head"><div class="card-title"><div class="ico">🚰</div><div><h3>Suministro</h3><p>Horarios publicados</p></div></div></div>
-        <div class="card-body"><div id="suministroLista" class="list"></div></div>
-      </section>
-
-      <section id="cortes" class="screen card section">
-        <div class="view-head">
-          <div><h2>Cortes programados</h2><p>Consulta interrupciones y trabajos programados.</p></div>
-          <button class="back-home" data-target="inicio">← Volver al inicio</button>
-        </div>
-
-        <div class="card-head"><div class="card-title"><div class="ico">⚠</div><div><h3>Cortes programados</h3><p>Avisos de interrupciones</p></div></div></div>
-        <div class="card-body"><div id="cortesLista" class="list"></div></div>
-      </section>
-
-      <section id="reuniones" class="screen card section">
-        <div class="view-head">
-          <div><h2>Reuniones</h2><p>Próximas reuniones y actividades de la Junta.</p></div>
-          <button class="back-home" data-target="inicio">← Volver al inicio</button>
-        </div>
-
-        <div class="card-head"><div class="card-title"><div class="ico">👥</div><div><h3>Reuniones</h3><p>Próximas actividades</p></div></div></div>
-        <div class="card-body"><div id="reunionesLista" class="list"></div></div>
-      </section>
-
-      <section id="consejos" class="screen card section section-wide">
-        <div class="view-head">
-          <div><h2>Consejos</h2><p>Recomendaciones para cuidar y ahorrar agua.</p></div>
-          <button class="back-home" data-target="inicio">← Volver al inicio</button>
-        </div>
-
-        <div class="card-head"><div class="card-title"><div class="ico">💧</div><div><h3>Consejos para cuidar el agua</h3><p>Recomendaciones de la Junta</p></div></div></div>
-        <div class="card-body"><div id="consejosLista" class="list"></div></div>
-      </section>
   </section>
+
+  <section id="historial" class="screen card section secondary">
+    <div class="view-head"><div><h2>Historial de pagos</h2><p>Consulta tus pagos registrados durante el año.</p></div><button class="back-home" data-target="inicio">← Volver al inicio</button></div>
+    <div class="card-head"><div class="card-title"><div class="ico">📋</div><div><h3>Historial de pagos</h3><p>Movimientos registrados durante el año</p></div></div></div>
+    <div class="card-body"><div id="historialLista" class="list"></div></div>
+  </section>
+
+  <section id="comunicados" class="screen card section secondary">
+    <div class="view-head"><div><h2>Comunicados</h2><p>Información y avisos importantes de la Junta de Agua.</p></div><button class="back-home" data-target="inicio">← Volver al inicio</button></div>
+    <div class="card-head"><div class="card-title"><div class="ico">📢</div><div><h3>Comunicados</h3><p>Información importante</p></div></div></div>
+    <div class="card-body"><div id="comunicadosLista" class="list"></div></div>
+  </section>
+
+  <section id="suministro" class="screen card section secondary">
+    <div class="view-head"><div><h2>Suministro de agua</h2><p>Consulta los horarios publicados.</p></div><button class="back-home" data-target="inicio">← Volver al inicio</button></div>
+    <div class="card-head"><div class="card-title"><div class="ico">🚰</div><div><h3>Suministro</h3><p>Horarios publicados</p></div></div></div>
+    <div class="card-body"><div id="suministroLista" class="list"></div></div>
+  </section>
+
+  <section id="cortes" class="screen card section secondary">
+    <div class="view-head"><div><h2>Cortes programados</h2><p>Consulta interrupciones y trabajos programados.</p></div><button class="back-home" data-target="inicio">← Volver al inicio</button></div>
+    <div class="card-head"><div class="card-title"><div class="ico">⚠</div><div><h3>Cortes programados</h3><p>Avisos de interrupciones</p></div></div></div>
+    <div class="card-body"><div id="cortesLista" class="list"></div></div>
+  </section>
+
+  <section id="reuniones" class="screen card section secondary">
+    <div class="view-head"><div><h2>Reuniones</h2><p>Próximas reuniones y actividades de la Junta.</p></div><button class="back-home" data-target="inicio">← Volver al inicio</button></div>
+    <div class="card-head"><div class="card-title"><div class="ico">👥</div><div><h3>Reuniones</h3><p>Próximas actividades</p></div></div></div>
+    <div class="card-body"><div id="reunionesLista" class="list"></div></div>
+  </section>
+
+  <section id="consejos" class="screen card section secondary">
+    <div class="view-head"><div><h2>Consejos</h2><p>Recomendaciones para cuidar y ahorrar agua.</p></div><button class="back-home" data-target="inicio">← Volver al inicio</button></div>
+    <div class="card-head"><div class="card-title"><div class="ico">💧</div><div><h3>Consejos para cuidar el agua</h3><p>Recomendaciones de la Junta</p></div></div></div>
+    <div class="card-body"><div id="consejosLista" class="list"></div></div>
+  </section>
+</section>
 
   <footer class="footer">© 2026 Junta de Agua Cayo Blanco · Cuidemos el agua, cuidemos nuestro futuro.</footer>
 </div>
@@ -461,8 +448,10 @@ function salir(){
 function go(target){
  const realTarget = target==='pagos' ? 'inicio' : target;
  document.querySelectorAll('.screen').forEach(v=>{
-   v.classList.toggle('active',v.id===realTarget);
+   v.classList.remove('active');
  });
+ const targetEl=document.getElementById(realTarget);
+ if(targetEl) targetEl.classList.add('active');
  document.querySelectorAll('.nav button').forEach(b=>{
    b.classList.toggle('active',b.dataset.target===target);
  });
