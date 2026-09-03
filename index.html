@@ -81,7 +81,12 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
 .hint{color:var(--muted);font-size:.75rem;text-align:center;line-height:1.5;margin:12px 0 0}
 .msg{margin-top:12px;padding:12px 14px;border-radius:13px;font-size:.84rem}
 .msg.error{background:var(--redbg);color:var(--red)}
-.account{display:grid;grid-template-columns:1fr auto;gap:14px;padding:20px 22px;border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:var(--soft);margin-bottom:14px}
+.account{display:block;padding:20px 22px;border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:var(--soft);margin-bottom:14px}
+.account > div:first-child{min-width:0}
+.account .profile{min-width:0}
+.account .meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:12px 22px;margin:16px 0 0;padding-top:14px;border-top:1px solid #edf2f6}
+.account .meta > div{min-width:0}
+.account .meta strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .profile{display:flex;align-items:center;gap:14px}
 .avatar{width:60px;height:60px;border-radius:19px;background:linear-gradient(145deg,#dff4ff,#bfe8ff);color:var(--blue);display:grid;place-items:center;font-size:28px}
 .profile h2{margin:0;font-size:1.35rem;letter-spacing:-.035em}
@@ -155,8 +160,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
 .footer{text-align:center;color:#8191a1;font-size:.68rem;padding:8px 0 28px}
 @media(max-width:980px){
  .sidebar{width:215px;flex-basis:215px}.metrics{grid-template-columns:repeat(2,1fr)}.month-grid{grid-template-columns:repeat(4,1fr)}
- .quick-grid{grid-template-columns:repeat(3,1fr)}.account{grid-template-columns:1fr}
- .account .logout{justify-self:start}.meta{margin-left:0;margin-top:8px}
+ .quick-grid{grid-template-columns:repeat(3,1fr)}.account .logout{justify-self:start}.account .meta{grid-template-columns:repeat(2,minmax(0,1fr));margin-left:0;margin-top:16px}
 }
 @media(max-width:720px){
  .app{display:block}.sidebar{position:fixed;z-index:30;left:-270px;top:0;width:250px;height:100vh;transition:.22s}
@@ -828,6 +832,9 @@ body{
   padding:25px;
 }
 @media(max-width:720px){
+  .account{padding:17px}
+  .account .meta{grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;padding-top:12px}
+  .profile h2{font-size:1.12rem}
   .content{width:min(100% - 24px,1180px);padding-top:14px}
   .login-wrap{margin:24px auto 40px}
   .login-hero .big-logo{width:125px;height:125px;border-radius:26px}
@@ -839,27 +846,6 @@ body{
 }
 </style>
 
-<style>
-.account{
-  position:relative;
-  overflow:hidden;
-}
-.account:after{
-  content:"";
-  position:absolute;
-  right:18px;
-  top:50%;
-  transform:translateY(-50%);
-  width:92px;height:92px;
-  background:url("LOGO.png") center/contain no-repeat;
-  opacity:.055;
-  pointer-events:none;
-}
-.profile,.meta{position:relative;z-index:1}
-@media(max-width:720px){
-  .account:after{width:70px;height:70px;right:8px}
-}
-</style>
 
 <style>
 /* ===== ESTADO DEL ABONADO V11 ===== */
@@ -886,6 +872,8 @@ body{
   color:#087a4b !important;
   border:1px solid #bce8d2 !important;
 }
+#estadoAbonado.status-active{background:#dcfce7!important;color:#15803d!important;border:2px solid #86efac!important}
+#estadoAbonado.status-inactive{background:#fee2e2!important;color:#dc2626!important;border:2px solid #fca5a5!important}
 </style>
 
 <style>
@@ -911,20 +899,6 @@ body{
 .item-text,.item-title,.item-date{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere;word-break:normal}
 @media(max-width:600px){.meeting-stats{grid-template-columns:1fr 1fr}.meeting-stat.fine{grid-column:1/-1}.meeting-row{grid-template-columns:1fr}.meeting-fine{text-align:left}}
 </style>
-
-<style id="estado-final">
-#estadoAbonado.status-active{
-  background:#dcfce7 !important;
-  color:#15803d !important;
-  border:2px solid #86efac !important;
-}
-#estadoAbonado.status-inactive{
-  background:#fee2e2 !important;
-  color:#dc2626 !important;
-  border:2px solid #fca5a5 !important;
-}
-</style>
-
 </head>
 <body>
 <div id="menuBackdrop" class="menu-backdrop"></div>
@@ -1117,7 +1091,7 @@ body{
 </div>
 
 <script>
-const API_URL='https://script.google.com/macros/s/AKfycbx22bPoG6_z8TZwcr0SIqJTpS8ap7X8gfKVIb2ApBbK00jksgJV8Spam5YxX4wCD-Gz/exec';
+const API_URL='https://script.google.com/macros/s/AKfycby0Lms4AcOuTzUuoNgT13ad2aXudD-al-oxDzeLd23QCoaBnTxAx_IP92Tc63Ou0U8eCg/exec';
 const $=id=>document.getElementById(id);
 const money=n=>new Intl.NumberFormat('es-HN',{style:'currency',currency:'HNL',minimumFractionDigits:2}).format(Number(n)||0);
 
@@ -1151,13 +1125,14 @@ function render(data){
  $('identidadVista').textContent=a.identidad||'—';
  $('direccion').textContent=a.direccion||'—';
  const estadoEl = $('estadoAbonado');
- const estadoTexto = String(a.estado || 'ACTIVO').trim();
+ const estadoTexto = String(a.estado || 'SIN ESTADO').trim();
  const estadoNormalizado = estadoTexto.toUpperCase()
-   .normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');
+   .normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
  const esActivo = estadoNormalizado === 'ACTIVO' || estadoNormalizado === 'ACTIVA';
+ const esInactivo = ['INACTIVO','INACTIVA','SUSPENDIDO','SUSPENDIDA','BAJA','CANCELADO','CANCELADA'].includes(estadoNormalizado);
  estadoEl.classList.remove('status-active','status-inactive');
  estadoEl.textContent = '● '+estadoTexto;
- estadoEl.classList.add(esActivo ? 'status-active' : 'status-inactive');
+ estadoEl.classList.add(esActivo && !esInactivo ? 'status-active' : 'status-inactive');
  $('pagadoTotal').textContent=money(c.totalPagado);
  $('anioMetric').textContent='Este año '+(c.anio||'');
  $('mensualidadesPagadas').textContent=money(c.totalMensualidadesPagadas);
@@ -1201,7 +1176,9 @@ function render(data){
    const el=$(id);clear(el);(items||[]).forEach(fn);if(!el.children.length)empty(el,emptyText);
  };
  // ===== REUNIONES Y MULTAS =====
- const rm = data.reunionesMultas || data.reunionesAsistidas || data.reunionesYMultas || null;
+ // Acepta tanto la respuesta nueva como variantes antiguas del backend.
+ const rm = data.reunionesMultas || data.reunionesYMultas || data.reunionesAsistidas || null;
+ const reunionesPublicadas = Array.isArray(data.reuniones) ? data.reuniones : [];
  const rmTotal = rm ? Number(rm.totalReuniones ?? rm.total) || 0 : null;
  const rmAsistidas = rm ? Number(rm.asistidas ?? rm.reunionesAsistidas) || 0 : null;
  const rmMultas = rm ? Number(rm.totalMultas ?? rm.multas) || 0 : null;
@@ -1219,8 +1196,9 @@ function render(data){
  detalle.forEach(x=>{
    const row=document.createElement('div'); row.className='meeting-row';
    const left=document.createElement('div');
-   const date=document.createElement('div'); date.className='meeting-date'; date.textContent=x.fecha||x.date||'Fecha no disponible';
-   const yes = x.asistio===true || x.asistio==='true' || x.asistio==='TRUE' || x.asistio==='SI' || x.asistio==='SÍ' || x.asistencia==='ASISTIO' || x.asistencia==='ASISTIÓ';
+   const date=document.createElement('div'); date.className='meeting-date'; date.textContent=x.fecha||x.date||x.fechaReunion||'Fecha no disponible';
+   const rawAsistencia = x.asistio ?? x.asistencia ?? x.asistioReunion ?? x.presente;
+   const yes = rawAsistencia===true || String(rawAsistencia).trim().toUpperCase()==='TRUE' || String(rawAsistencia).trim().toUpperCase()==='VERDADERO' || String(rawAsistencia).trim().toUpperCase()==='SI' || String(rawAsistencia).trim().toUpperCase()==='SÍ' || String(rawAsistencia).trim().toUpperCase()==='ASISTIO' || String(rawAsistencia).trim().toUpperCase()==='ASISTIÓ';
    const st=document.createElement('div'); st.className='meeting-status '+(yes?'yes':'no'); st.textContent=yes?'✓ ASISTIÓ':'✕ NO ASISTIÓ';
    left.append(date,st);
    const fine=document.createElement('div'); fine.className='meeting-fine'; fine.textContent=yes?'Sin multa':money(Number(x.multa ?? x.montoMulta ?? 100)||100);
@@ -1234,7 +1212,7 @@ function render(data){
  renderList('comunicadosLista',data.comunicados,x=>addItem($('comunicadosLista'),x.titulo,x.fecha,x.mensaje),'No hay comunicados publicados.');
  renderList('suministroLista',data.suministro,x=>addItem($('suministroLista'),x.sector,x.fecha,(x.horaInicio||'')+' - '+(x.horaFin||'')+(x.observacion?' · '+x.observacion:'')),'No hay horarios publicados.');
  renderList('cortesLista',data.cortes,x=>addItem($('cortesLista'),x.sector,x.fecha,(x.horaInicio||'')+' - '+(x.horaFin||'')+(x.motivo?' · '+x.motivo:'')),'No hay cortes programados.');
- renderList('reunionesLista',data.reuniones,x=>addItem($('reunionesLista'),x.descripcion,x.fecha,(x.lugar||'')+' · '+(x.hora||'')),'No hay reuniones publicadas.');
+ renderList('reunionesLista',reunionesPublicadas,x=>addItem($('reunionesLista'),x.descripcion||'Reunión de abonados',x.fecha,(x.lugar||'')+' · '+(x.hora||'')),'No hay reuniones publicadas.');
  renderList('consejosLista',data.consejos,x=>addItem($('consejosLista'),x.titulo,x.fecha,x.consejo),'No hay consejos publicados.');
 
  $('login').classList.add('hidden');
