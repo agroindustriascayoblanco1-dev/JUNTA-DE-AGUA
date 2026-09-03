@@ -978,6 +978,20 @@ body{
 }
 </style>
 
+
+<style id="estado-abonado-final">
+#estadoAbonado.badge.status-active{
+  background:#dcfce7 !important;
+  color:#15803d !important;
+  border:1px solid #86efac !important;
+}
+#estadoAbonado.badge.status-inactive{
+  background:#fee2e2 !important;
+  color:#dc2626 !important;
+  border:1px solid #fca5a5 !important;
+}
+</style>
+
 </head>
 <body>
 <div id="menuBackdrop" class="menu-backdrop"></div>
@@ -1206,12 +1220,15 @@ function render(data){
  const estadoEl = $('estadoAbonado');
  const estadoTexto = String(a.estado || 'ACTIVO').trim();
  const estadoNormalizado = estadoTexto.toUpperCase()
-   .normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');
+   .normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim();
+
+ // ACTIVO siempre verde. INACTIVO/SUSPENDIDO/BAJA/CANCELADO siempre rojo.
  const esInactivo = /INACTIV|SUSPEND|BAJA|CANCEL/.test(estadoNormalizado);
- const esActivo = !esInactivo && /ACTIV/.test(estadoNormalizado);
+ const esActivo = !esInactivo && /\\bACTIV[OA]?\\b/.test(estadoNormalizado);
+
+ estadoEl.classList.remove('status-active','status-inactive');
  estadoEl.textContent = '● '+estadoTexto;
- estadoEl.classList.toggle('status-active', esActivo);
- estadoEl.classList.toggle('status-inactive', esInactivo || !esActivo);
+ estadoEl.classList.add(esActivo ? 'status-active' : 'status-inactive');
  $('pagadoTotal').textContent=money(c.totalPagado);
  $('anioMetric').textContent='Este año '+(c.anio||'');
  $('mensualidadesPagadas').textContent=money(c.totalMensualidadesPagadas);
