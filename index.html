@@ -6,30 +6,156 @@
 <title>Portal del Abonado | Junta de Agua</title>
 <meta name="description" content="Portal de consulta de la Junta de Agua">
 <style>
-:root{--green:#147a52;--green-dark:#0b5b3c;--green-soft:#e9f7f0;--ink:#173027;--muted:#6a7a73;--line:#dfe9e4;--bg:#f5f8f6;--danger:#b42335;--danger-soft:#fff0f2;--white:#fff}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#edf7f2 0,#f7faf8 330px,var(--bg) 100%);color:var(--ink)}
-button,input{font:inherit}.wrap{width:min(980px,calc(100% - 28px));margin:0 auto}.top{padding:42px 0 26px;text-align:center}.brand{display:inline-flex;align-items:center;gap:11px;color:var(--green-dark);font-weight:800;letter-spacing:.02em}.drop{width:46px;height:46px;border-radius:15px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:23px;box-shadow:0 8px 22px rgba(20,122,82,.2)}h1{margin:18px 0 7px;font-size:clamp(1.8rem,5vw,2.7rem);letter-spacing:-.04em}.sub{margin:0;color:var(--muted);font-size:1rem}.login{max-width:520px;margin:10px auto 34px;background:var(--white);border:1px solid var(--line);border-radius:24px;padding:25px;box-shadow:0 16px 45px rgba(18,54,39,.08)}label{display:block;font-size:.82rem;font-weight:800;margin-bottom:8px;color:#40564d;text-transform:uppercase;letter-spacing:.07em}input{width:100%;height:54px;border:1px solid #cbd9d3;border-radius:15px;padding:0 16px;outline:none;color:var(--ink);background:#fff}input:focus{border-color:var(--green);box-shadow:0 0 0 4px rgba(20,122,82,.1)}.actions{display:flex;gap:10px;margin-top:14px}button{border:0;border-radius:15px;min-height:52px;padding:0 20px;cursor:pointer;font-weight:800}.primary{flex:1;background:var(--green);color:#fff}.primary:hover{background:var(--green-dark)}.logout{background:#eef3f0;color:#315046}.hidden{display:none!important}.msg{margin-top:14px;padding:12px 14px;border-radius:13px;font-size:.9rem}.msg.error{background:var(--danger-soft);color:var(--danger)}.panel{padding-bottom:45px}.welcome{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:15px}.welcome h2{margin:0;font-size:1.5rem}.welcome p{margin:5px 0 0;color:var(--muted);font-size:.9rem}.status{border-radius:22px;padding:25px;margin-bottom:14px;background:var(--green-soft);border:1px solid #cbe9d9}.status.pending{background:var(--danger-soft);border-color:#f3cbd2}.status-row{display:flex;align-items:center;justify-content:space-between;gap:20px}.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.09em;font-weight:900;color:#5d746a}.status h3{margin:5px 0 3px;font-size:1.35rem}.amount{font-size:clamp(2rem,7vw,3.1rem);font-weight:900;letter-spacing:-.05em}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.card small{display:block;color:var(--muted);font-weight:700;margin-bottom:8px}.value{font-size:1.35rem;font-weight:900}.sections{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.section{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.section h3{margin:0 0 13px;font-size:1rem}.item{padding:12px 0;border-top:1px solid var(--line)}.item:first-child{border-top:0;padding-top:0}.item-title{font-weight:900;margin-bottom:4px}.item-date{font-size:.76rem;color:var(--muted);font-weight:800;margin-bottom:6px}.item-text{font-size:.88rem;line-height:1.5;color:#496058}.empty{color:var(--muted);font-size:.88rem}.history{display:grid;gap:8px}.payment{display:flex;justify-content:space-between;gap:12px;padding:11px 12px;background:#f7faf8;border-radius:12px;font-size:.88rem}.payment strong{white-space:nowrap}.months{display:flex;flex-wrap:wrap;gap:7px}.month{padding:7px 10px;border-radius:999px;background:#fff0f2;color:#a72537;font-size:.8rem;font-weight:800}.footer{text-align:center;color:#7a8983;font-size:.78rem;padding:10px 0 35px}
-@media(max-width:650px){.wrap{width:min(100% - 20px,980px)}.top{padding-top:28px}.login{padding:19px;border-radius:20px}.cards,.sections{grid-template-columns:1fr}.status-row{align-items:flex-start;flex-direction:column}.welcome{align-items:flex-start;flex-direction:column}.logout{width:100%}}
+:root{
+  --green:#0b7a53;--green-dark:#07583d;--green-soft:#e9f8f1;
+  --ink:#12342a;--muted:#6b7f77;--line:#e1ebe6;--bg:#f4f8f6;
+  --white:#fff;--danger:#b42335;--danger-soft:#fff1f3;
+  --shadow:0 18px 50px rgba(11,55,39,.09);--radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ color:var(--ink);background:
+ radial-gradient(circle at 15% 0%,rgba(18,139,94,.10),transparent 28%),
+ linear-gradient(180deg,#edf8f3 0,#f8fbf9 360px,var(--bg) 100%);
+ min-height:100vh
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1080px,calc(100% - 32px));margin:auto}
+.top{padding:34px 0 28px}
+.header{
+ display:flex;align-items:center;justify-content:space-between;gap:18px;
+ padding:18px 22px;border:1px solid rgba(255,255,255,.75);
+ background:rgba(255,255,255,.82);backdrop-filter:blur(12px);
+ border-radius:24px;box-shadow:0 10px 35px rgba(12,67,47,.06)
+}
+.brand{display:flex;align-items:center;gap:12px;color:var(--green-dark);font-weight:900;letter-spacing:.04em}
+.drop{
+ width:48px;height:48px;border-radius:16px;background:var(--green);color:#fff;
+ display:grid;place-items:center;font-size:24px;box-shadow:0 9px 22px rgba(11,122,83,.24)
+}
+.header-tag{font-size:.76rem;font-weight:800;color:var(--muted);text-align:right}
+.hero{text-align:center;padding:34px 10px 20px}
+h1{margin:0;font-size:clamp(2rem,5vw,3.25rem);letter-spacing:-.055em;line-height:1.05}
+.sub{margin:12px auto 0;max-width:650px;color:var(--muted);font-size:1rem;line-height:1.55}
+.login{
+ max-width:570px;margin:8px auto 34px;background:rgba(255,255,255,.96);
+ border:1px solid var(--line);border-radius:28px;padding:28px;
+ box-shadow:var(--shadow)
+}
+.label{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+label{font-size:.76rem;font-weight:900;color:#40574e;text-transform:uppercase;letter-spacing:.09em}
+.label span{font-size:.72rem;color:var(--muted)}
+.input-wrap{position:relative}
+input{
+ width:100%;height:58px;border:1px solid #c9d9d2;border-radius:17px;padding:0 17px;
+ outline:none;color:var(--ink);background:#fff;font-size:1rem
+}
+input:focus{border-color:var(--green);box-shadow:0 0 0 4px rgba(11,122,83,.10)}
+.actions{display:flex;gap:10px;margin-top:13px}
+button{border:0;border-radius:16px;min-height:53px;padding:0 20px;font-weight:900}
+.primary{flex:1;background:linear-gradient(135deg,var(--green),#159368);color:#fff;box-shadow:0 9px 20px rgba(11,122,83,.20)}
+.primary:hover{background:var(--green-dark)}
+.primary:disabled{opacity:.65;cursor:wait}
+.logout{background:#edf3f0;color:#315248}
+.hint{margin:12px 0 0;color:var(--muted);font-size:.78rem;line-height:1.5;text-align:center}
+.hidden{display:none!important}
+.msg{margin-top:13px;padding:12px 14px;border-radius:14px;font-size:.88rem}
+.msg.error{background:var(--danger-soft);color:var(--danger)}
+.panel{padding-bottom:40px}
+.account-head{
+ display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:15px;
+ padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:22px;
+ box-shadow:0 8px 28px rgba(12,67,47,.05)
+}
+.avatar{
+ width:48px;height:48px;border-radius:15px;background:var(--green-soft);
+ display:grid;place-items:center;font-size:22px
+}
+.identity{display:flex;align-items:center;gap:13px}
+.welcome h2{margin:0;font-size:1.35rem;letter-spacing:-.025em}
+.welcome p{margin:4px 0 0;color:var(--muted);font-size:.86rem}
+.status{
+ border-radius:24px;padding:25px 26px;margin-bottom:14px;
+ background:linear-gradient(135deg,#e9f8f1,#f6fcf9);border:1px solid #cce9dc;
+ box-shadow:var(--shadow)
+}
+.status.pending{background:linear-gradient(135deg,#fff0f2,#fff9fa);border-color:#f2ccd3}
+.status-row{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.eyebrow{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;font-weight:900;color:#61776e}
+.status h3{margin:5px 0 0;font-size:1.4rem}
+.amount{font-size:clamp(2.2rem,7vw,3.4rem);font-weight:950;letter-spacing:-.06em;line-height:1}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.card{
+ background:#fff;border:1px solid var(--line);border-radius:19px;padding:19px;
+ box-shadow:0 8px 28px rgba(12,67,47,.045)
+}
+.card small{display:block;color:var(--muted);font-weight:800;margin-bottom:9px;font-size:.76rem;text-transform:uppercase;letter-spacing:.06em}
+.value{font-size:1.28rem;font-weight:950}
+.sections{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.section{
+ background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;
+ box-shadow:0 8px 28px rgba(12,67,47,.045)
+}
+.section h3{margin:0 0 14px;font-size:1rem;letter-spacing:-.01em}
+.item{padding:13px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0;padding-top:0}
+.item-title{font-weight:900;margin-bottom:4px}
+.item-date{font-size:.74rem;color:var(--muted);font-weight:850;margin-bottom:6px}
+.item-text{font-size:.88rem;line-height:1.55;color:#496058}
+.empty{color:var(--muted);font-size:.86rem;margin:0}
+.history{display:grid;gap:8px}
+.payment{
+ display:flex;justify-content:space-between;gap:12px;padding:12px 13px;
+ background:#f7faf8;border:1px solid #edf3ef;border-radius:13px;font-size:.86rem
+}
+.payment strong{white-space:nowrap}
+.months{display:flex;flex-wrap:wrap;gap:7px}
+.month{padding:7px 10px;border-radius:999px;background:var(--danger-soft);color:#a72537;font-size:.78rem;font-weight:900}
+.footer{text-align:center;color:#7a8983;font-size:.76rem;padding:8px 0 35px}
+.section-wide{grid-column:1/-1}
+@media(max-width:700px){
+ .wrap{width:min(100% - 18px,1080px)}
+ .top{padding-top:18px}
+ .header{padding:15px 16px;border-radius:20px}
+ .header-tag{display:none}
+ .hero{padding:26px 6px 16px}
+ .login{padding:21px;border-radius:22px}
+ .cards,.sections{grid-template-columns:1fr}
+ .status-row,.account-head{align-items:flex-start;flex-direction:column}
+ .logout{width:100%}
+ .section-wide{grid-column:auto}
+}
 </style>
 </head>
 <body>
 <main class="wrap">
 <section class="top">
-<div class="brand"><span class="drop">💧</span><span>JUNTA DE AGUA</span></div>
-<h1>Portal del Abonado</h1>
-<p class="sub">Consulte su estado de cuenta, avisos y actividades de la Junta.</p>
+<div class="header">
+  <div class="brand"><span class="drop">💧</span><span>JUNTA DE AGUA</span></div>
+  <div class="header-tag">PORTAL DEL ABONADO<br>Consulta en línea</div>
+</div>
+<div class="hero">
+  <h1>Portal del Abonado</h1>
+  <p class="sub">Consulte su estado de cuenta, avisos y actividades de la Junta de Agua de forma rápida y sencilla.</p>
+</div>
 </section>
 
 <section id="login" class="login">
-<label for="identidad">Número de identidad</label>
+<div class="label"><label for="identidad">Número de identidad</label><span>Acceso del abonado</span></div>
 <input id="identidad" inputmode="numeric" autocomplete="off" placeholder="0801-1990-12345" maxlength="20">
 <div class="actions"><button id="consultar" class="primary" type="button">Consultar mi cuenta</button></div>
 <div id="loginMsg" class="msg hidden" role="alert"></div>
-<p style="margin:14px 0 0;color:var(--muted);font-size:.78rem;line-height:1.5">Ingrese el número de identidad registrado ante la Junta de Agua.</p>
+<p class="hint">Ingrese el número de identidad registrado ante la Junta de Agua.</p>
 </section>
 
 <section id="panel" class="panel hidden" aria-live="polite">
-<div class="welcome"><div><h2 id="nombre">Abonado</h2><p id="datos">Código de abonado</p></div><button id="salir" class="logout" type="button">Salir</button></div>
+<div class="account-head">
+  <div class="identity"><div class="avatar">👤</div><div class="welcome"><h2 id="nombre">Abonado</h2><p id="datos">Código de abonado</p></div></div>
+  <button id="salir" class="logout" type="button">Salir de la cuenta</button>
+</div>
 
 <div id="status" class="status"><div class="status-row">
 <div><div class="eyebrow">Estado de la cuenta</div><h3 id="estado">AL DÍA</h3></div>
@@ -43,7 +169,7 @@ button,input{font:inherit}.wrap{width:min(980px,calc(100% - 28px));margin:0 auto
 </div>
 
 <div class="sections">
-<section class="section"><h3>📋 Historial de pagos</h3><div id="historial" class="history"></div></section>
+<section class="section section-wide"><h3>📋 Historial de pagos</h3><div id="historial" class="history"></div></section>
 <section class="section"><h3>🔴 Meses pendientes</h3><div id="meses" class="months"></div></section>
 <section class="section"><h3>📢 Comunicados</h3><div id="comunicados"></div></section>
 <section class="section"><h3>🚰 Suministro</h3><div id="suministro"></div></section>
