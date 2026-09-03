@@ -771,13 +771,102 @@ body{
   word-break: break-word;
 }
 </style>
+
+<style>
+/* ===== IDENTIDAD VISUAL V10 ===== */
+.logo{
+  overflow:hidden;
+  padding:5px;
+  background:#fff;
+}
+.logo img{
+  width:100%;height:100%;display:block;object-fit:contain;
+}
+.interior-topbar{
+  margin-bottom:18px;
+}
+.header-logo{
+  width:54px;height:54px;object-fit:contain;
+  border-radius:14px;background:#fff;
+  padding:3px;
+  border:1px solid #dbe8f2;
+  box-shadow:var(--soft);
+  flex:0 0 54px;
+}
+.login-wrap{
+  max-width:650px;
+  margin:42px auto 55px;
+}
+.login-hero{
+  margin-bottom:22px;
+}
+.login-hero .big-logo{
+  width:150px;height:150px;
+  border-radius:30px;
+  padding:8px;
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:0 18px 45px rgba(5,55,105,.13);
+}
+.login-hero .big-logo img{
+  width:100%;height:100%;
+  object-fit:contain;
+  display:block;
+}
+.login-hero h1{
+  font-size:clamp(1.65rem,4vw,2.35rem);
+  letter-spacing:-.045em;
+  margin:18px 0 7px;
+}
+.login-hero p{
+  max-width:510px;
+  margin:0 auto;
+  font-size:.82rem;
+}
+.login-card{
+  border-radius:24px;
+  padding:25px;
+}
+@media(max-width:720px){
+  .content{width:min(100% - 24px,1180px);padding-top:14px}
+  .login-wrap{margin:24px auto 40px}
+  .login-hero .big-logo{width:125px;height:125px;border-radius:26px}
+  .login-card{padding:20px;border-radius:20px}
+  .header-logo{width:46px;height:46px;flex-basis:46px}
+  .welcome{gap:9px}
+  .welcome h1{font-size:.92rem}
+  .welcome p{font-size:.64rem}
+}
+</style>
+
+<style>
+.account{
+  position:relative;
+  overflow:hidden;
+}
+.account:after{
+  content:"";
+  position:absolute;
+  right:18px;
+  top:50%;
+  transform:translateY(-50%);
+  width:92px;height:92px;
+  background:url("LOGO.png") center/contain no-repeat;
+  opacity:.055;
+  pointer-events:none;
+}
+.profile,.meta{position:relative;z-index:1}
+@media(max-width:720px){
+  .account:after{width:70px;height:70px;right:8px}
+}
+</style>
 </head>
 <body>
 <div id="menuBackdrop" class="menu-backdrop"></div>
 <div class="app">
 <aside id="sidebar" class="sidebar">
   <div class="brand">
-    <div class="logo">💧</div>
+    <div class="logo"><img src="LOGO.png" alt="Junta de Agua Cayo Blanco"></div>
     <div><strong>JUNTA DE AGUA<br>CAYO BLANCO</strong><small>Portal del Abonado</small></div>
   </div>
   <nav class="nav" aria-label="Navegación">
@@ -796,18 +885,9 @@ body{
 
 <main class="main">
 <div class="content">
-  <div class="topbar">
-    <button id="menuBtn" class="mobile-menu hidden" aria-label="Mostrar u ocultar menú">☰</button>
-    <div class="welcome">
-      <div class="welcome-dot">💧</div>
-      <div><h1>¡Bienvenido de nuevo!</h1><p>Consulta tu información de manera fácil y segura.</p></div>
-    </div>
-    <button id="salir" class="logout hidden" type="button">Cerrar sesión ↪</button>
-  </div>
-
   <section id="login" class="login-wrap">
     <div class="login-hero">
-      <div class="big-logo">💧</div>
+      <div class="big-logo"><img src="LOGO.png" alt="Junta Administradora de Agua Potable Cayo Blanco"></div>
       <h1>Portal del Abonado</h1>
       <p>Consulta tu estado de cuenta, pagos y toda la información de la Junta de Agua.</p>
     </div>
@@ -821,6 +901,14 @@ body{
   </section>
 
   <section id="panel" class="hidden" aria-live="polite">
+  <div class="topbar interior-topbar">
+    <button id="menuBtn" class="mobile-menu hidden" aria-label="Mostrar u ocultar menú">☰</button>
+    <div class="welcome">
+      <img class="header-logo" src="LOGO.png" alt="Junta Administradora de Agua Potable Cayo Blanco">
+      <div><h1>Junta de Agua Cayo Blanco</h1><p>Portal del abonado · Información de tu cuenta</p></div>
+    </div>
+    <button id="salir" class="logout hidden" type="button">Cerrar sesión ↪</button>
+  </div>
   <section id="inicio" class="screen active">
     <div class="account">
       <div>
