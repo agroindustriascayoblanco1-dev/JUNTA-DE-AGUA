@@ -887,6 +887,30 @@ body{
   border:1px solid #bce8d2 !important;
 }
 </style>
+
+<style>
+/* ===== REUNIONES Y MULTAS ===== */
+.meeting-summary{margin:14px 0;background:linear-gradient(135deg,#eef8ff,#ffffff);border:1px solid #cfe5f5;border-radius:20px;box-shadow:var(--soft);overflow:hidden}
+.meeting-summary .summary-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 20px;border-bottom:1px solid #e7f0f6}
+.meeting-summary .summary-title{display:flex;align-items:center;gap:11px}
+.meeting-summary .summary-icon{width:40px;height:40px;border-radius:13px;background:#dff3ff;color:var(--blue);display:grid;place-items:center;font-size:20px}
+.meeting-summary h3{margin:0;font-size:1rem}
+.meeting-summary p{margin:3px 0 0;color:var(--muted);font-size:.7rem}
+.meeting-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 20px 18px}
+.meeting-stat{border:1px solid #dceaf4;background:#fff;border-radius:14px;padding:12px;text-align:center}
+.meeting-stat small{display:block;color:var(--muted);font-size:.64rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+.meeting-stat strong{display:block;margin-top:4px;font-size:1.25rem}
+.meeting-stat.attended strong{color:var(--green)}
+.meeting-stat.absent strong,.meeting-stat.fine strong{color:var(--red)}
+.meeting-detail{display:grid;gap:9px}
+.meeting-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:13px;border:1px solid #e5edf4;border-radius:14px;background:#fbfdff}
+.meeting-date{font-weight:950;font-size:.8rem}
+.meeting-status{font-size:.68rem;font-weight:950;margin-top:4px}
+.meeting-status.yes{color:#087c4d}.meeting-status.no{color:var(--red)}
+.meeting-fine{font-weight:950;color:var(--red);text-align:right;white-space:nowrap}
+.item-text,.item-title,.item-date{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere;word-break:normal}
+@media(max-width:600px){.meeting-stats{grid-template-columns:1fr 1fr}.meeting-stat.fine{grid-column:1/-1}.meeting-row{grid-template-columns:1fr}.meeting-fine{text-align:left}}
+</style>
 </head>
 <body>
 <div id="menuBackdrop" class="menu-backdrop"></div>
@@ -899,7 +923,7 @@ body{
   <nav class="nav" aria-label="Navegación">
     <button data-target="inicio" class="active"><span class="nav-icon">⌂</span>Inicio</button>
     <button data-target="pagos"><span class="nav-icon">💧</span>Estado de Cuenta</button>
-    <button data-target="comunicados"><span class="nav-icon">🗣️</span>Comunicados</button>
+    <button data-target="comunicados"><span class="nav-icon">📢</span>Comunicados</button>
     <button data-target="suministro"><span class="nav-icon">🚰</span>Suministro</button>
     <button data-target="cortes"><span class="nav-icon">⚠</span>Cortes</button>
     <button data-target="reuniones"><span class="nav-icon">👥</span>Reuniones</button>
@@ -954,15 +978,27 @@ body{
 
     <div class="metrics">
       <div class="metric blue"><div class="icon">💧</div><small>Total pagado</small><strong id="pagadoTotal">L0.00</strong><span id="anioMetric">Este año</span></div>
-      <div class="metric green"><div class="icon">✅</div><small>Mensualidades pagadas</small><strong id="mensualidadesPagadas">L0.00</strong><span id="mesesPagadosTexto">0 meses</span></div>
-      <div class="metric orange"><div class="icon">L</div><small>Mora pagada</small><strong id="moraPagada">L0.00</strong><span id="mesesMoraTexto">Sin mora</span></div>
-      <div class="metric dark"><div class="icon">⏳</div><small>Saldo pendiente</small><strong id="deuda">L0.00</strong><span id="pendienteTexto">Estás al día</span></div>
+      <div class="metric green"><div class="icon">▣</div><small>Mensualidades pagadas</small><strong id="mensualidadesPagadas">L0.00</strong><span id="mesesPagadosTexto">0 meses</span></div>
+      <div class="metric orange"><div class="icon">$</div><small>Mora pagada</small><strong id="moraPagada">L0.00</strong><span id="mesesMoraTexto">Sin mora</span></div>
+      <div class="metric dark"><div class="icon">▣</div><small>Saldo pendiente</small><strong id="deuda">L0.00</strong><span id="pendienteTexto">Estás al día</span></div>
     </div>
 
     <div id="status" class="status">
       <div class="left"><div class="status-icon">✓</div><div><div class="eyebrow">Estado de tu cuenta</div><h3 id="estado">AL DÍA</h3><div id="estadoMensaje" style="color:var(--muted);font-size:.78rem;margin-top:4px">Gracias por mantenerte al día con tus pagos.</div></div></div>
       <div class="debt"><small>Saldo pendiente</small><div id="deudaGrande" class="amount">L0.00</div></div>
     </div>
+
+    <section class="meeting-summary">
+      <div class="summary-head">
+        <div class="summary-title"><div class="summary-icon">📅</div><div><h3>Reuniones asistidas</h3><p>Tu asistencia y multas registradas</p></div></div>
+        <button class="outline" data-target="reuniones">Ver detalle</button>
+      </div>
+      <div class="meeting-stats">
+        <div class="meeting-stat"><small>Reuniones</small><strong id="reunionesTotal">0</strong></div>
+        <div class="meeting-stat attended"><small>Asistidas</small><strong id="reunionesAsistidas">0</strong></div>
+        <div class="meeting-stat fine"><small>Multas</small><strong id="reunionesMultas">L 0.00</strong></div>
+      </div>
+    </section>
 
     <section id="pagos" class="card pay-card">
       <div class="card-head">
@@ -984,9 +1020,9 @@ body{
       <div class="card-head"><div class="card-title"><div class="ico">⚡</div><div><h3>Acciones rápidas</h3><p>Accede directamente a la información</p></div></div></div>
       <div class="card-body"><div class="quick-grid">
         <button data-target="historial"><span class="qico">📋</span>Historial de pagos</button>
-        <button data-target="comunicados"><span class="qico">🗣️</span>Ver comunicados</button>
+        <button data-target="comunicados"><span class="qico">📢</span>Ver comunicados</button>
         <button data-target="suministro"><span class="qico">🚰</span>Próximo suministro</button>
-        <button data-target="cortes"><span class="qico">🚱</span>Ver cortes</button>
+        <button data-target="cortes"><span class="qico">⚠</span>Ver cortes</button>
         <button data-target="reuniones"><span class="qico">👥</span>Próximas reuniones</button>
         <button data-target="contactos"><span class="qico">👨‍💻</span>Contactos</button>
       </div></div>
@@ -1015,14 +1051,19 @@ body{
 
   <section id="cortes" class="screen card section secondary">
     <div class="view-head"><div><h2>Cortes programados</h2><p>Consulta interrupciones y trabajos programados.</p></div><button class="back-home" data-target="inicio">← Volver al inicio</button></div>
-    <div class="card-head"><div class="card-title"><div class="ico">🚱</div><div><h3>Cortes programados</h3><p>Avisos de interrupciones</p></div></div></div>
+    <div class="card-head"><div class="card-title"><div class="ico">⚠</div><div><h3>Cortes programados</h3><p>Avisos de interrupciones</p></div></div></div>
     <div class="card-body"><div id="cortesLista" class="list"></div></div>
   </section>
 
   <section id="reuniones" class="screen card section secondary">
-    <div class="view-head"><div><h2>Reuniones</h2><p>Próximas reuniones y actividades de la Junta.</p></div><button class="back-home" data-target="inicio">← Volver al inicio</button></div>
-    <div class="card-head"><div class="card-title"><div class="ico">👥</div><div><h3>Reuniones</h3><p>Próximas actividades</p></div></div></div>
+    <div class="view-head"><div><h2>Reuniones</h2><p>Próximas reuniones, asistencia y multas.</p></div><button class="back-home" data-target="inicio">← Volver al inicio</button></div>
+    <div class="card-head"><div class="card-title"><div class="ico">👥</div><div><h3>Próximas reuniones</h3><p>Actividades publicadas por la Junta</p></div></div></div>
     <div class="card-body"><div id="reunionesLista" class="list"></div></div>
+    <div class="card-head"><div class="card-title"><div class="ico">📅</div><div><h3>Mi asistencia</h3><p>Las casillas marcadas son asistencias; las no marcadas generan L100 de multa.</p></div></div></div>
+    <div class="card-body">
+      <div id="reunionesDetalleResumen" class="meeting-stats" style="padding:0 0 14px"></div>
+      <div id="reunionesAsistenciaLista" class="meeting-detail"></div>
+    </div>
   </section>
 
   <section id="consejos" class="screen card section secondary">
@@ -1146,6 +1187,37 @@ function render(data){
  const renderList=(id,items,fn,emptyText)=>{
    const el=$(id);clear(el);(items||[]).forEach(fn);if(!el.children.length)empty(el,emptyText);
  };
+ // ===== REUNIONES Y MULTAS =====
+ const rm = data.reunionesMultas || data.reunionesAsistidas || data.reunionesYMultas || null;
+ const rmTotal = rm ? Number(rm.totalReuniones ?? rm.total) || 0 : null;
+ const rmAsistidas = rm ? Number(rm.asistidas ?? rm.reunionesAsistidas) || 0 : null;
+ const rmMultas = rm ? Number(rm.totalMultas ?? rm.multas) || 0 : null;
+ $('reunionesTotal').textContent = rm ? rmTotal : '—';
+ $('reunionesAsistidas').textContent = rm ? rmAsistidas : '—';
+ $('reunionesMultas').textContent = rm ? money(rmMultas) : '—';
+ const detalle = rm && (rm.detalle || rm.reuniones || rm.items) || [];
+ const rd = $('reunionesAsistenciaLista'); clear(rd);
+ const rr = $('reunionesDetalleResumen'); clear(rr);
+ if(rm) [['Reuniones',rmTotal,''],['Asistidas',rmAsistidas,'attended'],['No asistidas',Math.max(0,rmTotal-rmAsistidas),'absent'],['Multas',money(rmMultas),'fine']].forEach(v=>{
+   const d=document.createElement('div'); d.className='meeting-stat '+v[2];
+   const sm=document.createElement('small'); sm.textContent=v[0];
+   const st=document.createElement('strong'); st.textContent=v[1]; d.append(sm,st); rr.appendChild(d);
+ });
+ detalle.forEach(x=>{
+   const row=document.createElement('div'); row.className='meeting-row';
+   const left=document.createElement('div');
+   const date=document.createElement('div'); date.className='meeting-date'; date.textContent=x.fecha||x.date||'Fecha no disponible';
+   const yes = x.asistio===true || x.asistio==='true' || x.asistio==='TRUE' || x.asistio==='SI' || x.asistio==='SÍ' || x.asistencia==='ASISTIO' || x.asistencia==='ASISTIÓ';
+   const st=document.createElement('div'); st.className='meeting-status '+(yes?'yes':'no'); st.textContent=yes?'✓ ASISTIÓ':'✕ NO ASISTIÓ';
+   left.append(date,st);
+   const fine=document.createElement('div'); fine.className='meeting-fine'; fine.textContent=yes?'Sin multa':money(Number(x.multa ?? x.montoMulta ?? 100)||100);
+   row.append(left,fine); rd.appendChild(row);
+ });
+ if(!detalle.length){
+   const p=document.createElement('p'); p.className='empty'; p.textContent='Aún no hay registros de asistencia disponibles.'; rd.appendChild(p);
+   rr.innerHTML='';
+ }
+
  renderList('comunicadosLista',data.comunicados,x=>addItem($('comunicadosLista'),x.titulo,x.fecha,x.mensaje),'No hay comunicados publicados.');
  renderList('suministroLista',data.suministro,x=>addItem($('suministroLista'),x.sector,x.fecha,(x.horaInicio||'')+' - '+(x.horaFin||'')+(x.observacion?' · '+x.observacion:'')),'No hay horarios publicados.');
  renderList('cortesLista',data.cortes,x=>addItem($('cortesLista'),x.sector,x.fecha,(x.horaInicio||'')+' - '+(x.horaFin||'')+(x.motivo?' · '+x.motivo:'')),'No hay cortes programados.');
