@@ -48,8 +48,8 @@ button,input{font:inherit}button{cursor:pointer}
 .side-footer{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:#8db6d8;font-size:.65rem}
 .main{flex:1;min-width:0}
 .sidebar.opened{display:block}
-.view{display:none;animation:viewIn .22s ease}
-.view.active{display:block}
+.screen{display:none!important;animation:viewIn .22s ease}
+.screen.active{display:block!important}
 @keyframes viewIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 .view-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
 .view-head h2{margin:0;font-size:1.25rem;letter-spacing:-.035em}
@@ -58,7 +58,7 @@ button,input{font:inherit}button{cursor:pointer}
 
 .content{width:min(1180px,calc(100% - 36px));margin:auto;padding:22px 0 35px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}
-.mobile-menu{display:none;border:0;background:#fff;color:var(--nav);width:46px;height:46px;border-radius:14px;box-shadow:var(--soft);font-size:20px}
+.mobile-menu{display:grid;place-items:center;border:0;background:#fff;color:var(--nav);width:46px;height:46px;border-radius:14px;box-shadow:var(--soft);font-size:20px}
 .welcome{display:flex;align-items:center;gap:12px}
 .welcome-dot{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#dff4ff,#fff);display:grid;place-items:center;font-size:21px}
 .welcome h1{font-size:1.12rem;margin:0;letter-spacing:-.025em}
@@ -138,7 +138,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
 .legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;padding-top:15px;color:#607086;font-size:.68rem;font-weight:800}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
 .layout{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.section{min-width:0}
+.section{min-width:0}.screen.card{width:100%;min-height:260px}
 .section-wide{grid-column:1/-1}
 .list{display:grid;gap:8px}
 .item{padding:12px;border:1px solid #e8eff5;border-radius:13px;background:#fbfdff}
@@ -159,7 +159,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
 }
 @media(max-width:720px){
  .app{display:block}.sidebar{position:fixed;z-index:30;left:-270px;top:0;width:250px;height:100vh;transition:.22s}
- .sidebar.open{left:0}.mobile-menu{display:grid;place-items:center}.content{width:min(100% - 18px,1180px);padding-top:13px}
+ .sidebar.opened{display:block}.sidebar.opened.open{left:0}.mobile-menu{display:grid;place-items:center}.content{width:min(100% - 18px,1180px);padding-top:13px}
  .topbar{align-items:center}.welcome-dot{display:none}.welcome h1{font-size:1rem}
  .account{padding:17px}.metrics{grid-template-columns:1fr 1fr;gap:8px}.metric{min-height:110px;padding:15px}
  .status{align-items:flex-start;flex-direction:column}.status .debt{text-align:left}
@@ -171,9 +171,15 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
  .month-grid{grid-template-columns:repeat(2,1fr)}.profile{align-items:flex-start}.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
  .account .logout{width:100%}.quick-grid{grid-template-columns:1fr 1fr}
 }
+.menu-backdrop{display:none}
+@media(max-width:720px){
+ .menu-backdrop{position:fixed;z-index:25;inset:0;background:rgba(2,28,55,.38);backdrop-filter:blur(2px)}
+ .menu-backdrop.show{display:block}
+}
 </style>
 </head>
 <body>
+<div id="menuBackdrop" class="menu-backdrop"></div>
 <div class="app">
 <aside id="sidebar" class="sidebar">
   <div class="brand">
@@ -212,7 +218,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
     </div>
     <div class="login-card">
       <div class="label"><label for="identidad">Número de identidad</label><span>Acceso del abonado</span></div>
-      <input id="identidad" inputmode="numeric" autocomplete="off" placeholder="0801-1990-12345" maxlength="20">
+      <input id="identidad" inputmode="tel" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="0801-1990-12345" maxlength="15">
       <button id="consultar" class="primary" type="button">Consultar mi cuenta</button>
       <div id="loginMsg" class="msg hidden" role="alert"></div>
       <p class="hint">Ingrese el número de identidad registrado ante la Junta de Agua.</p>
@@ -220,7 +226,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
   </section>
 
   <section id="panel" class="hidden" aria-live="polite">
-    <section id="inicio" class="view active">
+    <section id="inicio" class="screen active">
       <div class="account">
         <div>
           <div class="profile">
@@ -275,7 +281,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
       </div></div>
     </section>
 
-    <section id="historial" class="view card section section-wide">
+    <section id="historial" class="screen card section section-wide">
         <div class="view-head">
           <div><h2>Historial de pagos</h2><p>Consulta tus pagos registrados durante el año.</p></div>
           <button class="back-home" data-target="inicio">← Volver al inicio</button>
@@ -285,7 +291,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
         <div class="card-body"><div id="historialLista" class="list"></div></div>
       </section>
 
-      <section id="comunicados" class="view card section">
+      <section id="comunicados" class="screen card section">
         <div class="view-head">
           <div><h2>Comunicados</h2><p>Información y avisos importantes de la Junta de Agua.</p></div>
           <button class="back-home" data-target="inicio">← Volver al inicio</button>
@@ -295,7 +301,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
         <div class="card-body"><div id="comunicadosLista" class="list"></div></div>
       </section>
 
-      <section id="suministro" class="view card section">
+      <section id="suministro" class="screen card section">
         <div class="view-head">
           <div><h2>Suministro de agua</h2><p>Consulta los horarios publicados.</p></div>
           <button class="back-home" data-target="inicio">← Volver al inicio</button>
@@ -305,7 +311,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
         <div class="card-body"><div id="suministroLista" class="list"></div></div>
       </section>
 
-      <section id="cortes" class="view card section">
+      <section id="cortes" class="screen card section">
         <div class="view-head">
           <div><h2>Cortes programados</h2><p>Consulta interrupciones y trabajos programados.</p></div>
           <button class="back-home" data-target="inicio">← Volver al inicio</button>
@@ -315,7 +321,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
         <div class="card-body"><div id="cortesLista" class="list"></div></div>
       </section>
 
-      <section id="reuniones" class="view card section">
+      <section id="reuniones" class="screen card section">
         <div class="view-head">
           <div><h2>Reuniones</h2><p>Próximas reuniones y actividades de la Junta.</p></div>
           <button class="back-home" data-target="inicio">← Volver al inicio</button>
@@ -325,7 +331,7 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
         <div class="card-body"><div id="reunionesLista" class="list"></div></div>
       </section>
 
-      <section id="consejos" class="view card section section-wide">
+      <section id="consejos" class="screen card section section-wide">
         <div class="view-head">
           <div><h2>Consejos</h2><p>Recomendaciones para cuidar y ahorrar agua.</p></div>
           <button class="back-home" data-target="inicio">← Volver al inicio</button>
@@ -434,8 +440,9 @@ function render(data){
 }
 
 async function consultar(){
- const id=$('identidad').value.trim();
- if(id.length<5){showError('Escriba un número de identidad válido.');return;}
+ const id=formatIdentidad($('identidad').value.trim());
+ $('identidad').value=id;
+ if(id.replace(/\D/g,'').length!==13){showError('Escriba un número de identidad válido.');return;}
  $('loginMsg').className='msg hidden';$('consultar').disabled=true;$('consultar').textContent='Consultando…';
  try{
    const data=await jsonp(API_URL+'?identidad='+encodeURIComponent(id));
@@ -448,19 +455,46 @@ function salir(){
  $('panel').classList.add('hidden');$('login').classList.remove('hidden');$('salir').classList.add('hidden');
  $('menuBtn').classList.add('hidden');
  $('sidebar').classList.remove('opened','open');
+ $('menuBackdrop').classList.remove('show');
  $('identidad').value='';$('identidad').focus();window.scrollTo({top:0,behavior:'smooth'});
 }
 function go(target){
  const realTarget = target==='pagos' ? 'inicio' : target;
- document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===realTarget));
- document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.target===target));
- $('sidebar').classList.remove('open');
+ document.querySelectorAll('.screen').forEach(v=>{
+   v.classList.toggle('active',v.id===realTarget);
+ });
+ document.querySelectorAll('.nav button').forEach(b=>{
+   b.classList.toggle('active',b.dataset.target===target);
+ });
+ closeMenu();
  window.scrollTo({top:0,behavior:'smooth'});
 }
 $('consultar').addEventListener('click',consultar);
 $('identidad').addEventListener('keydown',e=>{if(e.key==='Enter')consultar();});
 $('salir').addEventListener('click',salir);
-$('menuBtn').addEventListener('click',()=>$('sidebar').classList.toggle('open'));
+function toggleMenu(){
+ const side=$('sidebar'), back=$('menuBackdrop');
+ const mobile=window.innerWidth<=720;
+ if(mobile){
+   side.classList.toggle('open');
+   back.classList.toggle('show');
+ }else{
+   side.classList.toggle('opened');
+ }
+}
+function closeMenu(){
+ $('sidebar').classList.remove('open');
+ $('menuBackdrop').classList.remove('show');
+}
+function formatIdentidad(value){
+ const digits=String(value||'').replace(/\D/g,'').slice(0,13);
+ if(digits.length<=4)return digits;
+ if(digits.length<=8)return digits.slice(0,4)+'-'+digits.slice(4);
+ return digits.slice(0,4)+'-'+digits.slice(4,8)+'-'+digits.slice(8);
+}
+$('menuBtn').addEventListener('click',toggleMenu);
+$('menuBackdrop').addEventListener('click',closeMenu);
+$('identidad').addEventListener('input',e=>{e.target.value=formatIdentidad(e.target.value);});
 document.querySelectorAll('[data-target]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.target)));
 </script>
 </body>
