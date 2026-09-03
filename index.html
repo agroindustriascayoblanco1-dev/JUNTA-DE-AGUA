@@ -24,7 +24,7 @@ body{
 }
 button,input{font:inherit}button{cursor:pointer}
 .hidden{display:none!important}
-#menuBtn:not(.hidden){display:grid}
+#menuBtn:not(.hidden){display:grid;place-items:center}
 .app{display:flex;min-height:100vh}
 .sidebar{
  width:250px;flex:0 0 250px;position:sticky;top:0;height:100vh;overflow:hidden;
@@ -186,6 +186,374 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,123,209,.11)}
 #inicio.screen.active{display:block!important}
 .secondary{min-height:260px;width:100%}
 .menu-toggle-icon{font-size:20px;line-height:1}
+</style>
+
+<style>
+/* ===== REFINAMIENTO VISUAL V5 ===== */
+:root{
+  --nav:#063766;
+  --nav2:#07508f;
+  --blue:#087bd1;
+  --blue2:#20a9ed;
+  --ink:#082f57;
+  --muted:#6d8195;
+  --line:#dbe8f2;
+  --bg:#f4f8fc;
+  --radius:18px;
+  --shadow:0 12px 32px rgba(4,55,100,.075);
+  --soft:0 5px 18px rgba(4,55,100,.055);
+}
+
+body{
+  font-size:15px;
+  overflow-x:hidden;
+}
+
+.sidebar{
+  width:232px;
+  flex-basis:232px;
+  padding:20px 13px;
+}
+
+.brand{
+  padding:2px 10px 22px;
+  gap:10px;
+}
+.logo{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  font-size:22px;
+}
+.brand strong{font-size:.82rem;line-height:1.12}
+.brand small{font-size:.68rem}
+
+.nav{gap:4px}
+.nav button{
+  min-height:45px;
+  border-radius:12px;
+  padding:0 12px;
+  font-size:.83rem;
+}
+.nav-icon{font-size:16px;width:23px}
+
+.side-help{
+  left:13px;
+  right:13px;
+  bottom:63px;
+  padding:12px 13px;
+  border-radius:14px;
+  font-size:.71rem;
+}
+
+.content{
+  width:min(1160px,calc(100% - 40px));
+  padding:18px 0 28px;
+}
+
+.topbar{
+  min-height:46px;
+  margin-bottom:14px;
+}
+.welcome{
+  gap:10px;
+}
+.welcome-dot{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  font-size:18px;
+}
+.welcome h1{font-size:1.02rem}
+.welcome p{font-size:.71rem}
+.logout{
+  min-height:40px;
+  padding:0 13px;
+  font-size:.73rem;
+}
+
+.account{
+  gap:12px;
+  padding:17px 19px;
+  border-radius:18px;
+  margin-bottom:11px;
+}
+.profile{gap:11px}
+.avatar{
+  width:53px;
+  height:53px;
+  border-radius:16px;
+  font-size:24px;
+}
+.profile h2{font-size:1.17rem}
+.profile p{font-size:.72rem}
+.meta{
+  margin-left:64px;
+  margin-top:-8px;
+  gap:17px;
+  font-size:.67rem;
+}
+.meta strong{font-size:.75rem}
+
+.metrics{
+  gap:10px;
+  margin-bottom:11px;
+}
+.metric{
+  min-height:104px;
+  padding:15px 16px;
+  border-radius:17px;
+}
+.metric .icon{font-size:19px;margin-bottom:8px}
+.metric small{font-size:.61rem}
+.metric strong{font-size:1.34rem}
+.metric span{font-size:.63rem}
+
+.status{
+  padding:17px 20px;
+  border-radius:18px;
+  margin-bottom:11px;
+}
+.status .left{gap:12px}
+.status-icon{
+  width:49px;
+  height:49px;
+  border-radius:15px;
+  font-size:23px;
+}
+.status h3{font-size:1.35rem}
+.status .amount{font-size:1.7rem}
+.status .eyebrow{font-size:.61rem}
+.status #estadoMensaje{font-size:.71rem!important}
+
+.card{
+  border-radius:18px;
+}
+.card-head{
+  padding:14px 17px;
+}
+.card-body{
+  padding:15px 17px;
+}
+.card-title{gap:9px}
+.card-title .ico{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+}
+.card-title h3{font-size:.88rem}
+.card-title p{font-size:.64rem}
+.outline,.back-home{
+  padding:8px 10px;
+  font-size:.66rem;
+}
+
+.pay-card{
+  margin-bottom:11px;
+}
+.month-grid{
+  gap:8px;
+}
+.month-card{
+  min-height:108px;
+  padding:10px 7px;
+  border-radius:13px;
+}
+.month-card .m-name{font-size:.61rem}
+.month-card .circle{
+  width:28px;
+  height:28px;
+  margin:6px 0 6px;
+  font-size:.75rem;
+}
+.month-card .m-state{font-size:.57rem}
+.month-card .m-amount{font-size:.9rem}
+.legend{
+  gap:12px;
+  padding-top:12px;
+  font-size:.61rem;
+}
+
+.quick{
+  margin:11px 0;
+}
+.quick-grid{
+  gap:8px;
+}
+.quick button{
+  min-height:62px;
+  border-radius:13px;
+  font-size:.66rem;
+}
+.quick .qico{
+  font-size:18px;
+  margin-bottom:4px;
+}
+
+.secondary{
+  border-radius:18px;
+  min-height:230px;
+}
+.view-head{
+  padding:16px 17px 0;
+  margin-bottom:12px;
+}
+.view-head h2{font-size:1.1rem}
+.view-head p{font-size:.68rem}
+.secondary>.card-head{
+  border-top:1px solid #edf2f6;
+}
+
+.item{
+  padding:11px;
+  border-radius:12px;
+}
+.item-title{font-size:.76rem}
+.item-date{font-size:.62rem}
+.item-text{font-size:.69rem}
+
+.footer{
+  font-size:.61rem;
+  padding:7px 0 20px;
+}
+
+/* Desktop: keep the application compact and balanced. */
+@media(min-width:981px){
+  .metrics{grid-template-columns:repeat(4,1fr)}
+  .month-grid{grid-template-columns:repeat(6,1fr)}
+}
+
+/* Tablet */
+@media(max-width:980px){
+  .sidebar{width:220px;flex-basis:220px}
+  .content{width:min(100% - 30px,1100px)}
+  .month-grid{grid-template-columns:repeat(4,1fr)}
+}
+
+/* Phones */
+@media(max-width:720px){
+  .content{
+    width:calc(100% - 20px);
+    padding:11px 0 22px;
+  }
+  .topbar{
+    margin-bottom:10px;
+    gap:8px;
+  }
+  .welcome-dot{display:none}
+  .welcome h1{font-size:.92rem}
+  .welcome p{font-size:.65rem}
+  .logout{
+    min-height:37px;
+    padding:0 10px;
+    font-size:.64rem;
+  }
+  .account{
+    padding:14px;
+    border-radius:16px;
+  }
+  .profile h2{font-size:1rem}
+  .meta{
+    margin-left:0;
+    margin-top:9px;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px 13px;
+  }
+  .metrics{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+  .metric{
+    min-height:96px;
+    padding:13px;
+  }
+  .metric strong{font-size:1.12rem}
+  .status{
+    padding:14px;
+    border-radius:16px;
+    align-items:flex-start;
+    flex-direction:row;
+  }
+  .status .left{min-width:0}
+  .status .debt{
+    text-align:right;
+    margin-left:auto;
+  }
+  .status h3{font-size:1.12rem}
+  .status .amount{font-size:1.35rem}
+  .status #estadoMensaje{font-size:.64rem!important}
+  .card-head{
+    padding:12px 13px;
+  }
+  .card-body{
+    padding:13px;
+  }
+  .month-grid{
+    grid-template-columns:repeat(4,1fr);
+    gap:7px;
+  }
+  .month-card{
+    min-height:98px;
+    padding:8px 5px;
+  }
+  .month-card .m-name{font-size:.56rem}
+  .month-card .circle{
+    width:25px;height:25px;margin:5px 0;
+  }
+  .month-card .m-state{font-size:.52rem;line-height:1.15}
+  .month-card .m-amount{font-size:.78rem}
+  .legend{
+    gap:8px 11px;
+    justify-content:flex-start;
+    font-size:.56rem;
+  }
+  .quick-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .quick button{min-height:59px}
+  .secondary{
+    width:100%;
+  }
+  .view-head{
+    padding:14px 13px 0;
+  }
+  .view-head h2{font-size:1rem}
+  .view-head p{font-size:.63rem}
+  .back-home{font-size:.6rem;padding:7px 9px}
+}
+
+/* Very small phones */
+@media(max-width:430px){
+  .content{width:calc(100% - 14px)}
+  .topbar{align-items:flex-start}
+  .welcome h1{font-size:.86rem}
+  .logout{font-size:.58rem}
+  .account{padding:12px}
+  .avatar{width:46px;height:46px;font-size:21px}
+  .profile h2{font-size:.91rem}
+  .profile p{font-size:.62rem}
+  .meta{font-size:.59rem}
+  .meta strong{font-size:.67rem}
+  .metric{min-height:91px;padding:11px}
+  .metric small{font-size:.54rem}
+  .metric strong{font-size:1rem}
+  .metric span{font-size:.56rem}
+  .status{
+    gap:8px;
+  }
+  .status-icon{width:42px;height:42px;font-size:20px}
+  .status h3{font-size:1rem}
+  .status .amount{font-size:1.12rem}
+  .status .eyebrow{font-size:.52rem}
+  .month-grid{grid-template-columns:repeat(3,1fr)}
+  .month-card{min-height:100px}
+  .month-card .m-name{font-size:.58rem}
+  .month-card .m-state{font-size:.52rem}
+  .month-card .m-amount{font-size:.8rem}
+  .quick-grid{gap:7px}
+  .quick button{font-size:.6rem}
+}
 </style>
 </head>
 <body>
