@@ -555,6 +555,40 @@ body{
   .quick button{font-size:.6rem}
 }
 </style>
+
+<style>
+/* Corrección V6: el adorno de onda no debe cruzar el saldo */
+.status:after{display:none!important}
+
+@media(max-width:720px){
+  .status{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:12px;
+  }
+  .status .left{
+    width:100%;
+  }
+  .status .debt{
+    width:100%;
+    margin-left:0;
+    padding-top:10px;
+    border-top:1px solid rgba(8,47,87,.08);
+    text-align:left!important;
+  }
+  .status .debt small{
+    margin-bottom:2px;
+  }
+  .status .amount{
+    font-size:1.55rem;
+  }
+}
+@media(max-width:430px){
+  .status{padding:13px}
+  .status .amount{font-size:1.35rem}
+}
+</style>
 </head>
 <body>
 <div id="menuBackdrop" class="menu-backdrop"></div>
